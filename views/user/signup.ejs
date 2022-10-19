@@ -1,0 +1,45 @@
+<%- include('../user/includes/layout.ejs') %>
+
+
+<div class="breadcrumb-area pt-255 pb-170" style="background-image: url(assets/img/banner/banner-4.jpg)">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+            <h2>SignUp</h2>
+            
+        </div>
+    </div>
+</div>
+
+
+<div id="lg2" class="tab-pane" style="background:white;">
+    <div class="login-form-container">
+        <div class="login-form">
+            
+            <div style="height: 580px; background:black;border-radius: 30px; display: flex;">
+                <div class="mx-auto w-50 mt-5">
+                    <p class="error"><%= Err %></p>
+
+                    
+                    <form class="mx-auto" id="signupform" action="/signup" method="post">
+                        <input class="signupfield" name="firstname" type="text" placeholder="Firstname" required>
+                        <input class="signupfield" name="Lastname" type="text" placeholder="Lastname" required>
+                        <input class="signupfield" name="Email" type="Email" placeholder="Email" required>
+                        <input class="signupfield" name="Password" type="password" placeholder="Password" required>
+                        <input class="signupfield" name="ConfirmPassword" type="password"placeholder="Confirm Password" required>
+                        <div class="button-box">
+                            <button type="submit" class="btn-style cr-btn"><span>SignUp</span></button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%- include('../user/includes/User-footer.ejs') %> 
+
+<script src="/js/script.js"></script>

@@ -1,0 +1,23 @@
+{
+  "name": "project---spin-the-wheels",
+  "version": "1.0.0",
+  "description": "Bikers Ecommerce",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hariprasad K H",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.6.5",
+    "nocache": "^3.0.4",
+    "nodemon": "^2.0.20",
+    "session": "^0.1.0"
+  }
+}
