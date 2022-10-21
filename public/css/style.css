@@ -21126,5 +21126,9 @@ dl li {
     padding-left: 20px;
   }
 }
+.categoryinput{
+  border-color: aliceblue;
+  height: 22%;
+}
 
 /*# sourceMappingURL=maps/style.css.map */

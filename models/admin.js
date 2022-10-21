@@ -13,4 +13,4 @@ let adminSchema = new Schema ({
     }
 }) 
 
-module.exports = mongoose.model('admin',{adminSchema})
+module.exports = mongoose.model('admin',adminSchema)

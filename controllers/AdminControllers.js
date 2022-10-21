@@ -2,6 +2,7 @@ const ADMIN_COLLECTION = require('../config/collection')
 const USER_COLLECTION = require('../config/collection')
 const adminModel = require('../models/admin')
 const userModel = require('../models/user')
+const categoryModel = require('../models/category')
 const bcrypt = require('bcrypt')
 
 
@@ -60,10 +61,52 @@ module.exports = {
         })
         res.redirect('/admin/adminuser')
     },
+    getAdminCategory:(req,res)=>{
+        res.render('admin/Admin-Category',{categoryErr})
+        categoryErr = null 
+    },
+    
     getAdminlogout:(req,res)=>{
         req.session.destroy();
         loggedIn = false;
         res.redirect('/admin')
+    },
+    getAllCategory:async(req,res)=>{
+        categoryModel.find({},function(err,result){
+            if(err){
+                res.send('err')
+            }else{
+                res.render('admin/Admin-Category',{result})
+                categoryErr = null
+            }
+        })
+    },
+    getdeleteCategory:async(req,res)=>{
+        console.log(req.params.id)
+        let categoryId = req.params.id
+        await categoryModel.deleteOne({_id:categoryId})
+        res.redirect('/admin/admincategory')
+
+    },
+    postAddCategory:(req,res)=>{
+        categoryModel.find({category:req.body.category},(err,data)=>{
+            if(data.length===0){
+                const category = new categoryModel({
+                    category:req.body.category
+                })
+                category.save()
+                .then(result=>{
+                    res.redirect('/admin/admincategory')
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
+            }else{
+                categoryErr = "Category already added"
+                res.redirect('/admin/admincategory')
+            }
+        }
+        )
     },
     PostAdminlogin :async (req,res) => {
         let Admin = await adminModel.findOne({Username:req.body.Username}).lean()

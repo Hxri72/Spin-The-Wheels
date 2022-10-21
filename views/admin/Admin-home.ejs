@@ -5,21 +5,20 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Spin The Wheels Admin</title>
+  <title>Spica Admin</title>
   <!-- base:css -->
   <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
   <!-- endinject -->
-  <!-- plugin css for this page -->
-  <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="../../css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
 </head>
+
 <body>
   <div class="container-scroller d-flex">
-    <!-- partial:./partials/_sidebar.html -->
+    <!-- partial:../../partials/_sidebar.html -->
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
       <ul class="nav">
         <li class="nav-item sidebar-category">
@@ -27,12 +26,13 @@
           <span></span>
         </li>
         <li class="nav-item">
-           <a class="nav-link" href="index.html">
+           <a class="nav-link" href="/admin/adminhome">
             <i class="mdi mdi-view-quilt menu-icon"></i>
             <span class="menu-title">Dashboard</span>
             <div class="badge badge-info badge-pill">2</div>
           </a>
         </li>
+        
         <li class="nav-item">
           <a class="nav-link" href="/admin/adminuser">
             <i class="mdi mdi-account menu-icon"></i>
@@ -40,7 +40,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminCategory">
             <i class="mdi mdi-chart-pie menu-icon"></i>
             <span class="menu-title">Category Management</span>
           </a>
@@ -55,15 +55,15 @@
     </nav>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <!-- partial:./partials/_navbar.html -->
+      <!-- partial:../../partials/_navbar.html -->      
       <nav class="navbar col-lg-12 col-12 px-0 py-0 py-lg-4 d-flex flex-row">
         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-menu"></span>
           </button>
           <div class="navbar-brand-wrapper">
-            <a class="navbar-brand brand-logo" href="index.html"><img src="../../images/logo.svg" alt="logo"/></a>
-            <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../images/logo-mini.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo" href="../../index.html"><img src="../../images/logo.svg" alt="logo"/></a>
+            <a class="navbar-brand brand-logo-mini" href="../../index.html"><img src="../../images/logo-mini.svg" alt="logo"/></a>
           </div>
           <h4 class="font-weight-bold mb-0 d-none d-md-block mt-1">Welcome back, Brandon Haynes</h4>
           <ul class="navbar-nav navbar-nav-right">
@@ -210,7 +210,9 @@
             </li>
           </ul>
         </div>
-      </nav>
+      </nav>     
+            
+            
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -402,7 +404,7 @@
                       <tbody>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face1.jpg" alt="image"/>
+                            <img src="images/faces/face1.jpg" alt="image"/>
                           </td>
                           <td>
                             Herman Beck
@@ -421,7 +423,7 @@
                         </tr>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face2.jpg" alt="image"/>
+                            <img src="images/faces/face2.jpg" alt="image"/>
                           </td>
                           <td>
                             Messsy Adam
@@ -440,7 +442,7 @@
                         </tr>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face3.jpg" alt="image"/>
+                            <img src="images/faces/face3.jpg" alt="image"/>
                           </td>
                           <td>
                             John Richards
@@ -459,7 +461,7 @@
                         </tr>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face4.jpg" alt="image"/>
+                            <img src="images/faces/face4.jpg" alt="image"/>
                           </td>
                           <td>
                             Peter Meggik
@@ -478,7 +480,7 @@
                         </tr>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face5.jpg" alt="image"/>
+                            <img src="images/faces/face5.jpg" alt="image"/>
                           </td>
                           <td>
                             Edward
@@ -497,7 +499,7 @@
                         </tr>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face6.jpg" alt="image"/>
+                            <img src="images/faces/face6.jpg" alt="image"/>
                           </td>
                           <td>
                             John Doe
@@ -516,7 +518,7 @@
                         </tr>
                         <tr>
                           <td class="py-1">
-                            <img src="../../images/faces/face7.jpg" alt="image"/>
+                            <img src="images/faces/face7.jpg" alt="image"/>
                           </td>
                           <td>
                             Henry Tom
@@ -607,23 +609,22 @@
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
-
   <!-- base:js -->
   <script src="../../vendors/js/vendor.bundle.base.js"></script>
   <!-- endinject -->
-  <!-- Plugin js for this page-->
-  <script src="../../vendors/chart.js/Chart.min.js"></script>
-  <!-- End plugin js for this page-->
   <!-- inject:js -->
   <script src="../../js/off-canvas.js"></script>
   <script src="../../js/hoverable-collapse.js"></script>
   <script src="../../js/template.js"></script>
   <!-- endinject -->
   <!-- plugin js for this page -->
+  <script src="../../vendors/chart.js/Chart.min.js"></script>
   <!-- End plugin js for this page -->
   <!-- Custom js for this page-->
-  <script src="../../js/dashboard.js"></script>
+  <script src="../../js/chart.js"></script>
   <!-- End custom js for this page-->
 </body>
 
 </html>
+  
+  

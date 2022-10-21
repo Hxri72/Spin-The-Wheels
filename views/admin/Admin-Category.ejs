@@ -219,37 +219,34 @@
           <div class="row" style="display:block;">
             <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
+                <form action="/admin/addCategory" method="post">
+                    <input class="categoryinput" type="text" name="category">
+                    <button class="btn btn-primary" type="submit">Add Category</button>
+                </form>
                 <table class="table mt-5">
                   <thead>
-                      <tr>
+                      <tr class="text-center">
                           <th class="text-center" scope="col">No</th>
-                          <th class="text-center" scope="col">FirstName</th>
-                          <th class="text-center" scope="col">LastName</th>
-                          <th class="text-center" scope="col">Email</th>
-                          <th class="text-center" scope="col">Edit</th>
+                          <th class="text-center" scope="col">category</th>
                       </tr>
                       
                   </thead>
                   
                   <tbody>
-                    
-                      <% result.forEach(function(result,index){%>
-                        <tr class="text-center">
-                          <th><%=index+1%></th>
-                          <th><%=result.firstname%></th>
-                          <th><%=result.lastname%></th>
-                          <th><%=result.Email%></th>
-                          
-                          <td>
-                            <%if (result.userStatus==="active") {%>
-                            <a class="btn btn-danger" href="/admin/userblock/<%=result._id%>">block</a>
-                            <%}else{%>
-                             <a class="btn btn-success" href="/admin/userUnblock/<%=result._id%>">Unblock</a>   
-                            <%} %>
-                          </td>
-                        </tr>
-
-                      <%}) %>
+                          <% result.forEach(function(result,index){%>
+                            <tr class="text-center">
+                              <th><%=index+1%></th>
+                              <th><%=result.category%></th>
+                            
+                             <td>
+                              <a class="btn btn-secondary">Products</a>
+                             </td>
+                             <td>
+                              <a class="btn btn-secondary" href="/admin/deletecategory/<%=result._id%>">Delete</a>
+                             </td>
+                            <tr></tr> 
+                          <%})%>
+                      
       
                       
       

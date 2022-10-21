@@ -35,6 +35,7 @@ module.exports = {
     },
     PostUsersignup:(req,res)=>{ 
         userModel.find({Email:req.body.Email},async(err,data)=>{
+        console.log(data);
             if(data.length==0){
 
                 // Confirm password validation
