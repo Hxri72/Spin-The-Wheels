@@ -3796,7 +3796,43 @@ p.checkout-coupon input[type="submit"] {
     color: red;
     font-weight: 600;
 }
-
+.onetime{
+    text-align: center;
+    font-family: system-ui;
+    position: relative;
+    top: 8%;
+    font-size: x-large;
+}
+.otplayout{
+    height: 400px;
+    width: 30%;
+    display: inline-block;
+    position: relative;
+    left: 33%;
+    top: 127px;
+    border-radius: 14px;
+}
+.submitotp{
+    position: relative;
+    top: 159px;
+    right: 33px;
+    border: none;
+    width: 20%;
+    height: 30px;
+    border-radius: 6px;
+}
+.submitinput{
+    position: relative;
+    top: 103px;
+    left: 104px;
+    width: 50%;
+    border-radius: 5px;
+}
+.otpsubhead{
+    position: relative;
+    top: 104px;
+    left: 106px;
+}
 
 /* signupform */
 

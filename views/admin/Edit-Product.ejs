@@ -46,19 +46,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-package-variant menu-icon"></i>
             <span class="menu-title">Product Management</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-bullseye menu-icon"></i>
             <span class="menu-title">Destinations</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-content-paste menu-icon"></i>
             <span class="menu-title">News And Updates</span>
           </a>
@@ -231,48 +231,48 @@
           <div class="row" style="display:block;">
             <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
-                <a class="btn btn-primary" type="submit" href="/admin/addproduct">Add Product</a>
-                <table class="table mt-5">
-                  <thead>
-                      <tr class="text-center">
-                          <th class="text-center" scope="col">No</th>
-                          <th class="text-center" scope="col">product Image</th>
-                          <th class="text-center" scope="col">Product Name</th>
-                          <th class="text-center" scope="col">category</th>
-                          <th class="text-center" scope="col">Quantity</th>
-                          <th class="text-center" scope="col">Price</th>
-
-                      </tr>
+                <h1 class="text-center">EDIT PRODUCT</h1>
+                <form action="/admin/editproduct/<%=result[0].id%>" method="post" enctype="multipart/form-data">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Product Name</label>
+                        <input name="productname" type="text" class="form-control" id="inputEmail4" placeholder="Product name" value="<%=result[0].productname%>">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Product category</label>
+                        <br>
+                        <select name="category" id="cars">
+                            
+                            <option><%=result[0].category%></option>
+                              
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputAddress">Description</label>
+                      <input value="<%=result[0].description%>" name="description" type="text" class="form-control" id="inputAddress" placeholder="Description">
+                    </div>
+                    
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Quantity</label>
+                        <input value="<%=result[0].quantity%>" name="quantity" type="number" class="form-control" id="inputCity">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputState">Price</label>
+                        <input value="<%=result[0].price%>" name="price" type="text" class="form-control" id="inputZip">
+                      </div>
                       
-                  </thead>
-                  
-                  <tbody>
-                    <% result.forEach(function(result,index){%>
-                      <tr class="text-center">
-                        <th><%=index+1%></th>
-                        <th style="width:17%;"><img src="/images/<%=result.productImg[0]%>" style="width:50%;"></th>
-                        <th><%=result.productname%></th>
-                        <th><%=result.category%></th>
-                        <th><%=result.quantity%></th>
-                        <th><%=result.price%></th>
-                        <td>
-                            <a href="/admin/editproduct/<%=result._id%>" class="btn btn-primary">Edit</a>
-                        </td>
-                        <td>
-                          <%if(result.productStatus==="true"){%>
-                            <a href="/admin/softdeleteproduct/<%=result._id%>" class="btn btn-success">SoftDelete</a>
-                          <%}else{%>
-                            <a href="/admin/undosoftdeleteproduct/<%=result._id%>" class="btn btn-success">UndoSoft</a>
-                          <%}%>
-
-                           <a href="/admin/deleteproduct/<%=result._id%>" class="btn btn-danger">Delete</a>
-                        </td>
-                      </tr>
-                    <%})%>
-                      
-                  </tbody>
-                  
-              </table>
+                      <div class="form-group col-md-6">
+                        <label for="inputZip">Upload Image</label>
+                        <input value="<%=result[0].productImg[0]%>" name="productImg" class="form-control form-control-lg" id="formFileLg" type="file" multiple/>
+                      </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">ADD PRODUCT</button>
+                  </form>
+                
+                
               <hr>
               </div>
             </div>

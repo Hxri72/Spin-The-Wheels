@@ -21130,5 +21130,27 @@ dl li {
   border-color: aliceblue;
   height: 22%;
 }
+#cars{
+  width: inherit;
+  height: 58%;
+  border: none;
+}
+.otplayout{
+  height: 400px;
+    width: 63%;
+    display: inline-block;
+    position: relative;
+    left: 24%;
+    top: 127px;
+    background: cadetblue;
+    border-radius: 14px;
+}
+.onetime{
+  text-align: center;
+  font-family: system-ui;
+  position: relative;
+  top: 8%;
+  font-size: x-large;
+}
 
 /*# sourceMappingURL=maps/style.css.map */

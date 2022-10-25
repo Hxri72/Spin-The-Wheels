@@ -46,9 +46,21 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-package-variant menu-icon"></i>
             <span class="menu-title">Product Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/adminproduct">
+            <i class="mdi mdi-bullseye menu-icon"></i>
+            <span class="menu-title">Destinations</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/adminproduct">
+            <i class="mdi mdi-content-paste menu-icon"></i>
+            <span class="menu-title">News And Updates</span>
           </a>
         </li>
       </ul>
@@ -219,10 +231,12 @@
           <div class="row" style="display:block;">
             <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
+                
                 <form action="/admin/addCategory" method="post">
                     <input class="categoryinput" type="text" name="category">
                     <button class="btn btn-primary" type="submit">Add Category</button>
                 </form>
+                <p style="color: red;"><%=categoryErr%></p>
                 <table class="table mt-5">
                   <thead>
                       <tr class="text-center">
@@ -239,12 +253,12 @@
                               <th><%=result.category%></th>
                             
                              <td>
-                              <a class="btn btn-secondary">Products</a>
+                              <a class="btn btn-secondary" href="/admin/categoryproduct/<%=result.category%>">Products</a>
                              </td>
                              <td>
                               <a class="btn btn-secondary" href="/admin/deletecategory/<%=result._id%>">Delete</a>
                              </td>
-                            <tr></tr> 
+                            </tr> 
                           <%})%>
                       
       

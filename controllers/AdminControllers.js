@@ -3,11 +3,14 @@ const USER_COLLECTION = require('../config/collection')
 const adminModel = require('../models/admin')
 const userModel = require('../models/user')
 const categoryModel = require('../models/category')
+const productModel = require('../models/product')
 const bcrypt = require('bcrypt')
+
 
 
 let loggedIn ;
 let adminloginErr;
+let categoryErr;
 
 module.exports = {
     getAdminlogin:(req,res)=>{
@@ -65,7 +68,48 @@ module.exports = {
         res.render('admin/Admin-Category',{categoryErr})
         categoryErr = null 
     },
-    
+    getAdminProduct:(req,res)=>{
+        productModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Product',{result})
+            }
+        })
+    },
+    getEditProduct:(req,res)=>{
+        productModel.find({_id:req.params.id},function(err,result){
+            if(err){
+                console.log('err')
+            }else{
+                res.render('admin/Edit-Product',{result})
+            }
+        })
+        
+    },
+    getSoftDeleteProduct:async(req,res)=>{
+        let productId = req.params.id
+        await productModel.updateOne({_id:productId},{
+            $set:{
+                productStatus:"false"
+            }
+        })
+        res.redirect('/admin/adminproduct')
+    },
+    getUndoSoftDeleteProduct:async(req,res)=>{
+        let productId = req.params.id
+        await productModel.updateOne({_id:productId},{
+            $set:{
+                productStatus:"true"
+            }
+        })
+        res.redirect('/admin/adminproduct')
+    },
+    getdeleteProduct:async(req,res)=>{
+        let productId = req.params.id
+        await productModel.deleteOne({_id:productId})
+        res.redirect('/admin/adminproduct')
+    },
     getAdminlogout:(req,res)=>{
         req.session.destroy();
         loggedIn = false;
@@ -76,17 +120,77 @@ module.exports = {
             if(err){
                 res.send('err')
             }else{
-                res.render('admin/Admin-Category',{result})
+                res.render('admin/Admin-Category',{result,categoryErr})
                 categoryErr = null
             }
         })
     },
     getdeleteCategory:async(req,res)=>{
-        console.log(req.params.id)
         let categoryId = req.params.id
         await categoryModel.deleteOne({_id:categoryId})
         res.redirect('/admin/admincategory')
 
+    },
+    getCategoryProduct:(req,res)=>{
+        console.log(req.params.category)
+        let categoryName = req.params.category
+        productModel.find({category:categoryName},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Product',{result})
+            }
+        })
+    },
+    getaddProduct:(req,res)=>{
+        categoryModel.find({},function(err,result){
+            if(err){
+                console.log('err')
+            }else{
+                res.render('admin/Add-Product',{result})
+            }
+        })
+        
+    },
+    postAddProduct:(req,res)=>{
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        const product = new productModel({
+            productname:req.body.productname,
+            category:req.body.category,
+            description:req.body.description,
+            quantity:req.body.quantity,
+            price:req.body.price,
+            productImg:imagename,
+            productStatus:"true"
+        })
+        product.save()
+        res.redirect('/admin/adminproduct')
+    },
+    postEditProduct:(req,res)=>{
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        productModel.find({_id:req.params.id},(err,data)=>{
+            if(data.length!==0){
+                productModel.updateOne({_id:req.params.id},{
+                    $set:{
+                        productname:req.body.productname,
+                        category:req.body.category,
+                        description:req.body.description,
+                        quantity:req.body.quantity,
+                        price:req.body.price,
+                        productImg:imagename
+                    }
+                })
+                res.redirect('/admin/adminproduct')
+            }else{
+                console.log(err)
+            }
+        })
     },
     postAddCategory:(req,res)=>{
         categoryModel.find({category:req.body.category},(err,data)=>{

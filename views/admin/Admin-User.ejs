@@ -51,6 +51,18 @@
             <span class="menu-title">Product Management</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="pages/charts/chartjs.html">
+            <i class="mdi mdi-bullseye menu-icon"></i>
+            <span class="menu-title">Destinations</span>
+          </a>
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link" href="pages/charts/chartjs.html">
+            <i class="mdi mdi-content-paste menu-icon"></i>
+            <span class="menu-title">News And Updates</span>
+          </a>
+        </li>
       </ul>
     </nav>
     <!-- partial -->
@@ -223,10 +235,10 @@
                   <thead>
                       <tr>
                           <th class="text-center" scope="col">No</th>
-                          <th class="text-center" scope="col">FirstName</th>
-                          <th class="text-center" scope="col">LastName</th>
+                          <th class="text-center" scope="col">FullName</th>
                           <th class="text-center" scope="col">Email</th>
-                          <th class="text-center" scope="col">Edit</th>
+                          <th class="text-center" scope="col">Phone</th>
+                          
                       </tr>
                       
                   </thead>
@@ -236,9 +248,9 @@
                       <% result.forEach(function(result,index){%>
                         <tr class="text-center">
                           <th><%=index+1%></th>
-                          <th><%=result.firstname%></th>
-                          <th><%=result.lastname%></th>
+                          <th><%=result.Fullname%></th>
                           <th><%=result.Email%></th>
+                          <th><%=result.Phone%></th>
                           
                           <td>
                             <%if (result.userStatus==="active") {%>
