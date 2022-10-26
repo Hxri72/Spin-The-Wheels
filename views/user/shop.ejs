@@ -22,7 +22,7 @@
                         <div class="sidebar-search">
                             <form action="#">
                                 <input type="text" placeholder="Search Products...">
-                                <button><i class="ti-search"></i></button>
+                                <button><i class="bi bi-search"></i></button>
                             </form>
                         </div>
                     </div>
@@ -30,11 +30,11 @@
                         <h3 class="sidebar-widget">by categories</h3>
                         <div class="widget-categories">
                             <ul>
-                                <li><a href="#">Clothing</a></li>
-                                <li><a href="#">Bags</a></li>
-                                <li><a href="#">Shoes</a></li>
-                                <li><a href="#">Jewelry</a></li>
-                                <li><a href="#">Accessories</a></li>
+                                <li><a href="#">Riding Gears</a></li>
+                                <li><a href="#">Spare Parts</a></li>
+                                <li><a href="#">Moto Merchandise</a></li>
+                                <li><a href="#">Luggage</a></li>
+                                <li><a href="#">Bike Protection</a></li>
                             </ul>
                         </div>
                     </div>
@@ -60,43 +60,43 @@
                         
                         <div class="row">
                             <% result.forEach(function(result){%>
-                            <div class="product-width col-md-6 col-xl-4 col-lg-6">
+                            <%if(result.productStatus==="true"){%>
+                                <div class="product-width col-md-6 col-xl-4 col-lg-6">
                                 
-                                <div class="product-wrapper mb-35">
-                                    
-                                        <div class="product-img">
-                                            <a href="/productdetails">
-                                                
-                                                <img src="/images/<%=result.productImg[0]%>" alt="">
-                                                
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="action-plus-2 p-action-none" title="Add To Cart" href="#">
-                                                    <i class="bi bi-cart"></i>
-                                                </a>
-                                                <a class="action-cart-2" title="Wishlist" href="#">
-                                                    <i class="bi bi-heart"></i>
-                                                </a>
-                                                <a class="action-reload" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">
-                                                    <i class="bi bi-binoculars"></i>
-                                                </a>
-                                            </div>
-                                            <div class="product-content-wrapper">
-                                                <div class="product-title-spreed">
-                                                    <h4><a href="product-details.html"><%=result.productname%></a></h4>
-                                                    
-                                                </div>
-                                                <div class="product-price">
-                                                    <span><%=result.price%></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
+                                    <div class="product-wrapper mb-35">
                                         
-                                    
+                                            <div class="product-img">
+                                                
+                                                <a href="/productdetails/<%=result.id%>">
+                                                    
+                                                    <img src="/images/<%=result.productImg[0]%>" alt="">
+                                                    
+                                                </a>
+                                                <div class="product-action">
+                                                    <a class="action-plus-2 p-action-none" title="Add To Cart" href="#">
+                                                        <i class="bi bi-cart"></i>
+                                                    </a>
+                                                    <a class="action-cart-2" title="Wishlist" href="#">
+                                                        <i class="bi bi-heart"></i>
+                                                    </a>
+                                                    <a class="action-reload" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">
+                                                        <i class="bi bi-binoculars"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="product-content-wrapper">
+                                                    <div class="product-title-spreed">
+                                                        <h4><a href="product-details.html"><%=result.productname%></a></h4>
+                                                        
+                                                    </div>
+                                                    <div class="product-price">
+                                                        <span><%=result.price%></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
                                 </div>
-                                
-                            </div>
+                            <%}%>    
+                            
                             <%})%>
                         </div>
                     </div>

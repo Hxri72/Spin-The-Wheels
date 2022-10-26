@@ -43,7 +43,6 @@ module.exports = {
     },
     getUserProfile:(req,res)=>{
         let user = req.session.user
-        
         res.render('user/profile',{user})
     },
     getUserShop:(req,res)=>{
@@ -58,8 +57,16 @@ module.exports = {
         
     },
     getProductDetails:(req,res)=>{
-        let user = req.session.user
-        res.render('user/product-details',{user})
+        productModel.find({_id:req.params.id},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/product-details',{user,result})
+            }
+        })
+
+        
     },
     getUserlogout:(req,res)=>{
         req.session.destroy()
@@ -72,7 +79,7 @@ module.exports = {
         const joinedbody=req.body.num1.join("")
         if(req.session.otpgenerator===joinedbody){
             const user = userModel.create(req.session.otp)
-            req.session.user = user
+            req.session.user = req.session.otp
             req.session.otp = null,
             req.session.otpgenerator = null,
             loggedIn = true

@@ -16,7 +16,7 @@ router.get('/logout',UserControllers.getUserlogout)
 
 router.get('/profile',UserControllers.getUserProfile)
 
-router.get('/productdetails',UserControllers.getProductDetails)
+router.get('/productdetails/:id',UserControllers.getProductDetails)
 
 router.post('/postotp',UserControllers.PostUserOtp)
 
