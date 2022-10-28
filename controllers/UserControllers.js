@@ -45,6 +45,9 @@ module.exports = {
         let user = req.session.user
         res.render('user/profile',{user})
     },
+    getAboutUs:(req,res)=>{
+        res.render('user/about-us')
+    },
     getUserShop:(req,res)=>{
         productModel.find({},(err,result)=>{
             if(err){

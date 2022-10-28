@@ -53,7 +53,8 @@ module.exports = {
                 
             }
         })
-        res.redirect('/admin/adminuser')
+        res.json({status:true})
+        // res.redirect('/admin/adminuser')
     },
     getUserUnblock:async(req,res)=>{
         let userId = req.params.id
@@ -94,7 +95,8 @@ module.exports = {
                 productStatus:"false"
             }
         })
-        res.redirect('/admin/adminproduct')
+        res.json({status:true})
+        // res.redirect('/admin/adminproduct')
     },
     getUndoSoftDeleteProduct:async(req,res)=>{
         let productId = req.params.id
@@ -108,7 +110,8 @@ module.exports = {
     getdeleteProduct:async(req,res)=>{
         let productId = req.params.id
         await productModel.deleteOne({_id:productId})
-        res.redirect('/admin/adminproduct')
+        res.json({status:true})
+        // res.redirect('/admin/adminproduct')
     },
     getAdminlogout:(req,res)=>{
         req.session.destroy();

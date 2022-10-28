@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../../css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -46,7 +47,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-package-variant menu-icon"></i>
             <span class="menu-title">Product Management</span>
           </a>
@@ -160,12 +161,13 @@
                         </td>
                         <td>
                           <%if(result.productStatus==="true"){%>
-                            <a href="/admin/softdeleteproduct/<%=result._id%>" class="btn btn-success">SoftDelete</a>
+                            <a onclick="softdeleteproduct('<%=result._id%>')"  class="btn btn-success">SoftDelete</a>
                           <%}else{%>
                             <a href="/admin/undosoftdeleteproduct/<%=result._id%>" class="btn btn-success">UndoSoft</a>
                           <%}%>
-
-                          <a onclick="function deleteprouduct(id)" href="/admin/deleteproduct/<%=result._id%>" class="btn btn-danger">Delete</a>
+                        </td>  
+                        <td>  
+                          <a onclick="deleteproduct('<%=result._id%>')" class="btn btn-danger">Delete</a>
                         </td>
                       </tr>
                     <%})%>
@@ -214,6 +216,68 @@
   <!-- Custom js for this page-->
   <script src="../../js/chart.js"></script>
   <!-- End custom js for this page-->
+  <script>
+    function deleteproduct(productId){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: '/admin/deleteproduct/'+productId,
+            method: 'get',
+            success : (response) =>{
+              if(response.status){
+                Swal.fire({
+                  icon : 'Deleted',
+                  title: 'Your file has been deleted.',
+                  showConfirmbutton:false
+              }).then(()=>{
+                  location.reload()
+              })
+              }
+            }
+          })
+      }
+    })
+    }
+  </script>
+  <script>
+    function softdeleteproduct(productId){
+      Swal.fire({
+    title: 'Are you sure?',
+    text: "You are Softdeleting a product!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Confirm!'
+    }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+            url: '/admin/softdeleteproduct/'+productId,
+            method: 'get',
+            success : (response) =>{
+              if(response.status){
+                Swal.fire({
+                  icon : 'success',
+                  title: 'Your file has been Softdeleted.',
+                  showConfirmbutton:false
+              }).then(()=>{
+                  location.reload()
+              })
+              }
+            }
+          })
+  }
+})
+    }
+  </script>
 </body>
 
 </html>

@@ -10,6 +10,8 @@ router.get('/login',UserControllers.getUserlogin)
 
 router.get('/otp',UserControllers.getOtp)
 
+router.get('/aboutus',UserControllers.getAboutUs)
+
 router.get('/shop',UserControllers.getUserShop)
 
 router.get('/logout',UserControllers.getUserlogout)

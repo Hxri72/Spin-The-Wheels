@@ -21,6 +21,7 @@
     "nodemon": "^2.0.20",
     "otp-generator": "^4.0.0",
     "session": "^0.1.0",
+    "sweetalert2": "^11.6.3",
     "twilio": "^3.83.0"
   }
 }
