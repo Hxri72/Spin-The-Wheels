@@ -15,6 +15,10 @@ let userSchema = new Schema({
         type : String,
         required : true
     },
+    Address:{
+        type:String,
+        required: true
+    },
     Password:{
         type : String,
         required : true
@@ -22,7 +26,8 @@ let userSchema = new Schema({
     userStatus:{
         type:String,
         required:true
-    }
+    },
+
 })
 
 module.exports = mongoose.model('user',userSchema)

@@ -12,6 +12,8 @@ router.get('/adminuser',AdminControllers.getAllUsers)
 
 router.get('/admincategory',AdminControllers.getAllCategory)
 
+router.get('/admindestinations',AdminControllers.getAdminDestinations)
+
 router.get('/userblock/:id',AdminControllers.getUserBlock)
 
 router.get('/userUnblock/:id',AdminControllers.getUserUnblock)

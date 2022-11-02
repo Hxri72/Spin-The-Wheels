@@ -194,16 +194,18 @@
     ------------------------------ */
     var CartPlusMinus = $('.cart-plus-minus');
     
+    
     CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
     CartPlusMinus.append('<div class="inc qtybutton">+</div>');
     $(".qtybutton").on("click", function() {
         var $button = $(this);
         var oldValue = $button.parent().find("input").val();
+        
         if ($button.text() === "+") {
             var newVal = parseFloat(oldValue) + 1;
         } else {
             // Don't allow decrementing below zero
-            if (oldValue > 0) {
+            if (oldValue > 1) {
                 var newVal = parseFloat(oldValue) - 1;
             } else {
                 newVal = 1;
@@ -212,6 +214,22 @@
         $button.parent().find("input").val(newVal);
     });
     
+    $(document).ready(function() {
+        $('.minus').click(function () {
+            var $input = $(this).parent().find('input');
+            var count = parseInt($input.val()) - 1;
+            count = count < 1 ? 1 : count;
+            $input.val(count);
+            $input.change();
+            return false;
+        });
+        $('.plus').click(function () {
+            var $input = $(this).parent().find('input');
+            $input.val(parseInt($input.val()) + 1);
+            $input.change();
+            return false;
+        });
+    });
     
     /*--
     Menu Stick
@@ -312,7 +330,7 @@
      ScrollUp
     ---------------------------- */
     $.scrollUp({
-        scrollText: '<i class="icofont icofont-rounded-up"></i>',
+        scrollText: '<i class="bi bi-arrow-up-short"></i>',
         easingType: 'linear',
         scrollSpeed: 900,
         animation: 'fade'

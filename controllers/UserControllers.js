@@ -4,18 +4,22 @@ const bcrypt = require('bcrypt')
 const {USER_COLLECTION}= require('../config/collection')
 const otpverification = require('../utils/otpgenerator')
 const productModel = require('../models/product')
+const cartModel = require('../models/cart')
+const wishlistModel = require('../models/wishlist')
 
-let loggedIn = false
+
+let loggedIn = false;
 let Err = null;
 let loginErr;
-
+let addressErr;
+let viewcart;
 module.exports = {
     getUserlogin : (req,res)=>{
-
-        res.render('user/login',{loginErr})
+        let user = req.session.user
+        res.render('user/login',{user,loginErr})
         loginErr = null
     },
-    getUserHome : (req,res)=>{
+    getUserHome :async (req,res)=>{
         if(loggedIn){
             productModel.find({},(err,result)=>{
                 if(err){
@@ -42,11 +46,114 @@ module.exports = {
         res.render('user/signup',{Err})
     },
     getUserProfile:(req,res)=>{
-        let user = req.session.user
-        res.render('user/profile',{user})
+        if(loggedIn){
+            let user = req.session.user
+            res.render('user/profile',{user,addressErr})
+            addressErr = null
+        }else{
+            res.redirect('/login')
+        }
+        
     },
     getAboutUs:(req,res)=>{
         res.render('user/about-us')
+    },
+    getAddtoWishlist:async(req,res)=>{
+        let productId = req.params.id
+        let userId = req.session.user._id
+        let products = await productModel.find({_id:productId})
+        let productExist = await wishlistModel.aggregate([
+            { $match: { UserId: userId } },
+            { $unwind: '$products' },
+            { $match: { 'products.productId': productId } },
+          ]);
+        wishlistModel.findOne({UserId:userId},async(err,data)=>{
+            if(data!==null){ 
+                if(productExist.length===0){
+                    await wishlistModel.updateOne({UserId:userId},{
+                        $push : {
+                            products :{
+                                productId : productId ,
+                                productname : products[0].productname,
+                                price : products[0].price,
+                                productImg : products[0].productImg
+                            }
+                        }
+                    })
+                    
+                }
+            }else{
+                const wishlist = new wishlistModel ({
+                    UserId : userId,
+                    products : {
+                        productId : productId ,
+                        productname : products[0].productname,
+                        price : products[0].price,
+                        productImg : products[0].productImg,
+                        quantity : 1 
+                    }
+                })
+                wishlist.save()
+            }
+        })
+    },
+    getUserWishlist : async(req,res) =>{
+        let userId = req.session.user._id
+        let viewWishlist = await wishlistModel.findOne({UserId:userId}).populate('products.productId').exec()
+        wishlistModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/wishlist',{user,result,viewWishlist})
+            }
+        })
+    },
+    getdeleteProduct:async(req,res)=>{
+        let userId = req.session.user
+        let productId = req.params.id
+        let productExist = await wishlistModel.aggregate([
+            { $match: { UserId: userId } },
+            { $unwind: '$products' },
+            { $match: { 'products.productId': productId } },
+          ]);
+        wishlistModel.findOne({UserId:userId},async(err,data)=>{
+            if(data){
+                if(productExist.length===0){
+                    await wishlistModel.updateOne({UserId:userId},{
+                        $pull : {
+                            products : {
+                                productId : productId
+                            }
+                        }
+                    }) 
+                }
+            }        
+        })
+        res.redirect('/wishlist')
+    },
+    getdeleteProductcart:async(req,res)=>{
+        let userId = req.session.user._id
+        let productId = req.params.id
+        let productExist = await cartModel.aggregate([
+            { $match: { UserId: userId } },
+            { $unwind: '$products' },
+            { $match: { 'products.productId': productId } },
+          ]);
+        cartModel.findOne({UserId:userId},async(err,data)=>{
+            if(data){
+                if(productExist.length!==0){
+                    await cartModel.updateOne({UserId:userId},{
+                        $pull : {
+                            products : {
+                                productId : productId
+                            }
+                        }
+                    }) 
+                }
+            }        
+        })
+        res.redirect('/cart')
     },
     getUserShop:(req,res)=>{
         productModel.find({},(err,result)=>{
@@ -59,17 +166,116 @@ module.exports = {
         })
         
     },
-    getProductDetails:(req,res)=>{
-        productModel.find({_id:req.params.id},(err,result)=>{
-            if(err){
-                console.log(err)
+    getProductDetails:(req,res)=>{ 
+            productModel.find({_id:req.params.id},(err,result)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    let user = req.session.user
+                    res.render('user/product-details',{user,result})
+                }
+            })
+    },
+    getUserCart:async(req,res)=>{
+        if(loggedIn){
+            let productId = req.params.id
+            let userId = req.session.user._id
+            let products = await productModel.find({_id:productId})
+            let productExist = await cartModel.aggregate([
+            { $match: { UserId: userId } },
+            { $unwind: '$products' },
+            { $match: { 'products.productId': productId } },
+            ]);
+            cartModel.findOne({UserId:userId},async(err,data)=>{
+            if(data){
+                    if(productExist.length!==0){
+                        await cartModel.updateOne({UserId:userId,'products.productId':productId},{
+                            $inc : {
+                                'products.$.quantity' : 1
+                            }
+                        })
+                        
+                    }else{
+                        await cartModel.updateOne({UserId:userId},{
+                            $push:{
+                                products : {
+                                    productId : productId ,
+                                    productname : products[0].productname,
+                                    price : products[0].price,
+                                    productImg : products[0].productImg,
+                                    quantity : 1 
+                                }
+                            }
+                        })
+                    }
+               
             }else{
-                let user = req.session.user
-                res.render('user/product-details',{user,result})
+                const cart = new cartModel ({
+                    UserId : userId,
+                    products : {
+                        productId : productId ,
+                        productname : products[0].productname,
+                        price : products[0].price,
+                        productImg : products[0].productImg,
+                        quantity : 1 
+                    }
+                })
+                cart.save()
             }
-        })
-
+            })
+        }else{
+            res.redirect('/login')
+        }
         
+    },
+    getCart:async(req,res)=>{
+        if(loggedIn){
+            let userId = req.session.user._id
+            let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
+            if(viewcart===null){
+                cartModel.find({},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/cart',{user,result,viewcart})
+                    }
+                })
+            }else{
+                if(viewcart.products.length===0){
+                    cartModel.find({},(err,result)=>{
+                        if(err){
+                            console.log(err)
+                        }else{
+                            let user = req.session.user
+                            res.render('user/cart',{user,result,viewcart})
+                        }
+                    })
+                }else{
+                    if(viewcart.products.length!==0){
+                        cartModel.find({},(err,result)=>{
+                            if(err){
+                                console.log(err)
+                            }else{
+                                let user = req.session.user
+                                res.render('user/cart',{user,result,viewcart})
+                            }
+                        })
+                    }
+                    
+                }
+
+            }
+        
+        }else{
+            res.redirect('/login')
+        }
+        
+        
+    },
+    getCheckOut : (req,res) =>{
+        let user = req.session.user
+        res.render('user/checkout',{user})
     },
     getUserlogout:(req,res)=>{
         req.session.destroy()
@@ -77,6 +283,47 @@ module.exports = {
     },
     getOtp:(req,res)=>{
         res.render('user/otp')
+    },
+    postProductSearch:async(req,res)=>{
+        console.log(req.body)
+        let product = await productModel.find({productname:req.body.search})
+        console.log(product)
+    },
+    postUserCartinc:async(req,res)=>{
+        str = req.params.id
+        let array = str.split("t");
+        userId = req.session.user._id
+        productId = array[0]
+        Quantity = array[1]
+        let productExist = await cartModel.aggregate([
+            { $match: { UserId: userId } },
+            { $unwind: '$products' },
+            { $match: { 'products.productId': productId } }, 
+          ]);
+          
+          cartModel.findOne({UserId:userId},async(err,data)=>{
+            if(data){
+                if(productExist!==0){
+                    await cartModel.updateOne({UserId:userId,'products.productId':productId},{"products.$.quantity" : Quantity})
+                }
+            }
+        })
+        res.json({status:true})
+    },
+    postUpdateProfile:(req,res)=>{
+        console.log(req.body)
+            userModel.findOne({Email:req.body.email},(err,data)=>{
+                console.log(data)
+                if(data){
+                    userModel.updateOne({Email:req.body.email},{
+                        $set : {
+                            Address: req.body.address
+                        } 
+                    })
+                    res.redirect('/profile')
+                }
+            })
+          
     },
     PostUserOtp:(req,res)=>{
         const joinedbody=req.body.num1.join("")

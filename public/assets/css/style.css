@@ -1378,11 +1378,13 @@
 .subscribe-form .mc-form .clear:hover {
     background-color: #fff;
 }
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
+
 .subscribe-form .mc-form .clear::before {
     color: #fff;
-    content: "\f1d8";
-    font-family: FontAwesome;
-    font-size: 18px;
+    content: "SEND";
+    font-family: Font Awesome 5 Free;
+    font-size: 15px;
     left: 39px;
     position: relative;
     top: 2px;
@@ -3833,6 +3835,31 @@ p.checkout-coupon input[type="submit"] {
     top: 104px;
     left: 106px;
 }
+span {cursor:pointer; }
+.number{
+    margin:100px;
+}
+.minus, .plus{
+    width:20px;
+    height:20px;
+    background:#f2f2f2;
+    border-radius:4px;
+    padding:8px 5px 8px 5px;
+    border:1px solid #ddd;
+display: inline-block;
+vertical-align: middle;
+text-align: center;
+}
+.input{
+    height:34px;
+width: 100px;
+text-align: center;
+font-size: 26px;
+    border:1px solid #ddd;
+    border-radius:4px;
+display: inline-block;
+vertical-align: middle;
+}    
 
 /* signupform */
 
@@ -3857,7 +3884,55 @@ p.checkout-coupon input[type="submit"] {
     background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
     }
 
+/* cart empty style */
 
+@import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+body {
+    background-color: #eee;
+}
+
+.mt-100{
+   margin-top:100px;
+
+}
+
+
+.card {
+    margin-bottom: 30px;
+    border: 0;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    letter-spacing: .5px;
+    border-radius: 8px;
+    -webkit-box-shadow: 1px 5px 24px 0 rgba(68,102,242,.05);
+    box-shadow: 1px 5px 24px 0 rgba(68,102,242,.05);
+}
+
+.card .card-header {
+    background-color: #fff;
+    border-bottom: none;
+    padding: 24px;
+    border-bottom: 1px solid #f6f7fb;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+}
+
+
+
+.card .card-body {
+    padding: 30px;
+    background-color: transparent;
+}
+
+.btn-primary, .btn-primary.disabled, .btn-primary:disabled {
+    background-color: #4466f2!important;
+    border-color: #4466f2!important;
+}
 
 
 

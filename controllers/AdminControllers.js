@@ -78,6 +78,9 @@ module.exports = {
             }
         })
     },
+    getAdminDestinations : (req,res)=>{
+        res.render('admin/Admin-Destination')
+    },
     getEditProduct:(req,res)=>{
         productModel.find({_id:req.params.id},function(err,result){
             if(err){

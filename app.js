@@ -8,7 +8,7 @@ const nocache = require('nocache')
 const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
 
-app.use(session({secret:"key",cookie:{maxAge:6000000}}))
+app.use(session({secret:"key",cookie:{maxAge:600000}}))
 app.use(express.urlencoded())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')));
