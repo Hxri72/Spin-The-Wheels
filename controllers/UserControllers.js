@@ -310,19 +310,22 @@ module.exports = {
         })
         res.json({status:true})
     },
-    postUpdateProfile:(req,res)=>{
-        console.log(req.body)
-            userModel.findOne({Email:req.body.email},(err,data)=>{
-                console.log(data)
+    postUpdateProfile:async(req,res)=>{
+            userModel.findOne({Email:req.body.email},async(err,data)=>{
                 if(data){
-                    userModel.updateOne({Email:req.body.email},{
-                        $set : {
-                            Address: req.body.address
-                        } 
+                        await userModel.updateOne({Email:req.body.email},{
+                            $set : {
+                                Address : req.body.address 
+                                }
+                            })
+                        }
                     })
+                    let user = await userModel.findOne({Email:req.body.email})
+                    console.log(user)
+                    console.log('hi')
+                    console.log(req.session.user)
                     res.redirect('/profile')
-                }
-            })
+                
           
     },
     PostUserOtp:(req,res)=>{

@@ -22,7 +22,7 @@ router.get('/adminlogout',AdminControllers.getAdminlogout)
 
 router.get('/categoryproduct/:category',AdminControllers.getCategoryProduct)
 
-router.get('/deletecategory/:id',AdminControllers.getdeleteCategory)
+router.get('/deletecategory/:category',AdminControllers.getdeleteCategory)
 
 router.get('/editproduct/:id',AdminControllers.getEditProduct)
 

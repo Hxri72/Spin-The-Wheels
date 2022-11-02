@@ -132,13 +132,19 @@ module.exports = {
         })
     },
     getdeleteCategory:async(req,res)=>{
-        let categoryId = req.params.id
-        await categoryModel.deleteOne({_id:categoryId})
-        res.redirect('/admin/admincategory')
-
+        let Category = req.params.category
+        productModel.find({category:Category},async(err,data)=>{
+            if(data.length!==0){
+                console.log('data present')
+                res.json({status:false})
+            }else{
+                console.log('data not present')
+                await categoryModel.deleteOne({category:Category})
+                res.json({status:true})
+            }
+        })
     },
     getCategoryProduct:(req,res)=>{
-        console.log(req.params.category)
         let categoryName = req.params.category
         productModel.find({category:categoryName},(err,result)=>{
             if(err){

@@ -17,7 +17,7 @@ let userSchema = new Schema({
     },
     Address:{
         type:String,
-        required: true
+        required: false
     },
     Password:{
         type : String,
