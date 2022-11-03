@@ -12,6 +12,10 @@ router.get('/adminuser',AdminControllers.getAllUsers)
 
 router.get('/admincategory',AdminControllers.getAllCategory)
 
+router.get('/adminBanner',AdminControllers.getUserBanner)
+
+router.get('/addbanner',AdminControllers.getAddBanner)
+
 router.get('/admindestinations',AdminControllers.getAdminDestinations)
 
 router.get('/userblock/:id',AdminControllers.getUserBlock)
@@ -35,6 +39,8 @@ router.get('/deleteproduct/:id',AdminControllers.getdeleteProduct)
 router.get('/adminproduct',AdminControllers.getAdminProduct)
 
 router.get('/addproduct',AdminControllers.getaddProduct)
+
+router.post('/addbanner',storageImg.array("bannerImg",2),AdminControllers.postAddBanner)
 
 router.post('/editproduct/:id',storageImg.array("productImg",2),AdminControllers.postEditProduct)
 

@@ -4,6 +4,7 @@ const adminModel = require('../models/admin')
 const userModel = require('../models/user')
 const categoryModel = require('../models/category')
 const productModel = require('../models/product')
+const bannerModel = require('../models/banner')
 const bcrypt = require('bcrypt')
 
 
@@ -81,6 +82,7 @@ module.exports = {
     getAdminDestinations : (req,res)=>{
         res.render('admin/Admin-Destination')
     },
+
     getEditProduct:(req,res)=>{
         productModel.find({_id:req.params.id},function(err,result){
             if(err){
@@ -121,6 +123,20 @@ module.exports = {
         loggedIn = false;
         res.redirect('/admin')
     },
+    getUserBanner:(req,res)=>{
+        bannerModel.find({},(err,result)=>{
+            console.log(result)
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Banner',{result})
+            }
+        })
+        
+    },
+    getAddBanner:(req,res)=>{
+        res.render('admin/Add-Banner',{result:false})
+    },
     getAllCategory:async(req,res)=>{
         categoryModel.find({},function(err,result){
             if(err){
@@ -135,10 +151,8 @@ module.exports = {
         let Category = req.params.category
         productModel.find({category:Category},async(err,data)=>{
             if(data.length!==0){
-                console.log('data present')
                 res.json({status:false})
             }else{
-                console.log('data not present')
                 await categoryModel.deleteOne({category:Category})
                 res.json({status:true})
             }
@@ -164,6 +178,22 @@ module.exports = {
         })
         
     },
+    postAddBanner:(req,res)=>{
+        console.log(req.files)
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        const banner = new bannerModel({
+            Section : req.body.Section,
+            bannerImg : imagename,
+            bannerStatus : "true"
+        })
+        banner.save()
+        res.redirect('/admin/adminbanner')
+
+
+    },
     postAddProduct:(req,res)=>{
         const imagename = []
         for(file of req.files){
@@ -186,9 +216,9 @@ module.exports = {
         for(file of req.files){
             imagename.push(file.filename)
         }
-        productModel.find({_id:req.params.id},(err,data)=>{
+        productModel.find({_id:req.params.id},async(err,data)=>{
             if(data.length!==0){
-                productModel.updateOne({_id:req.params.id},{
+                await productModel.updateOne({_id:req.params.id},{
                     $set:{
                         productname:req.body.productname,
                         category:req.body.category,

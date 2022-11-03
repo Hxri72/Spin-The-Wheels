@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="../../css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -53,19 +52,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin/adminBanner">
-            <i class="mdi mdi-content-paste menu-icon"></i>
-            <span class="menu-title">Banner Management</span>
-          </a>
-        </li>
+            <a class="nav-link" href="/admin/adminBanner">
+              <i class="mdi mdi-content-paste menu-icon"></i>
+              <span class="menu-title">Banner Management</span>
+            </a>
+          </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin/admindestinations">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-bullseye menu-icon"></i>
             <span class="menu-title">Destinations</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages/charts/chartjs.html">
+          <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-content-paste menu-icon"></i>
             <span class="menu-title">News And Updates</span>
           </a>
@@ -138,47 +137,35 @@
           <div class="row" style="display:block;">
             <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
-                <a class="btn btn-primary" type="submit" href="/admin/addproduct">Add Product</a>
+                <a class="btn btn-primary" type="submit" href="/admin/addbanner">Add Banner</a>
+                
+                
                 <table class="table mt-5">
-                  <thead>
+                    <thead>
                       <tr class="text-center">
-                          <th class="text-center" scope="col">No</th>
-                          <th class="text-center" scope="col">product Image</th>
-                          <th class="text-center" scope="col">Product Name</th>
-                          <th class="text-center" scope="col">category</th>
-                          <th class="text-center" scope="col">Quantity</th>
-                          <th class="text-center" scope="col">Price</th>
-
+                        <th>No</th>
+                        <th>Banner</th>
+                        <th>Section</th>
                       </tr>
                       
-                  </thead>
+                    </thead>
                   
-                  <tbody>
-                    <% result.forEach(function(result,index){%>
-                      <tr class="text-center">
-                        <th><%=index+1%></th>
-                        <th style="width:17%;"><img src="/images/<%=result.productImg[0]%>" style="width:50%;"></th>
-                        <th><%=result.productname%></th>
-                        <th><%=result.category%></th>
-                        <th><%=result.quantity%></th>
-                        <th><%=result.price%></th>
-                        <td>
-                            <a href="/admin/editproduct/<%=result._id%>" class="btn btn-primary">Edit</a>
-                        </td>
-                        <td>
-                          <%if(result.productStatus==="true"){%>
-                            <a onclick="softdeleteproduct('<%=result._id%>')"  class="btn btn-success">SoftDelete</a>
-                          <%}else{%>
-                            <a href="/admin/undosoftdeleteproduct/<%=result._id%>" class="btn btn-success">UndoSoft</a>
-                          <%}%>
-                        </td>  
-                        <td>  
-                          <a onclick="deleteproduct('<%=result._id%>')" class="btn btn-danger">Delete</a>
-                        </td>
-                      </tr>
-                    <%})%>
-                      
-                  </tbody>
+                    <tbody>
+                        <% result.forEach(function(result,index){%>
+                        <tr class="text-center">
+                            <td><%=index+1%></td>
+                            <td><img  style="width: 80px;height: 73px;border-radius: 0;" src="/images/<%=result.bannerImg[0]%>"></td>
+                            <td><%=result.Section%></td>
+                            <td>
+                                <a class="btn btn-primary">Edit</a>
+                            </td>  
+                          
+                            <td>
+                                <a class="btn btn-danger">SoftDelete</a>
+                            </td>
+                        </tr>
+                       <%})%>
+                    </tbody>
                   
               </table>
               <hr>
@@ -222,68 +209,6 @@
   <!-- Custom js for this page-->
   <script src="../../js/chart.js"></script>
   <!-- End custom js for this page-->
-  <script>
-    function deleteproduct(productId){
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: '/admin/deleteproduct/'+productId,
-            method: 'get',
-            success : (response) =>{
-              if(response.status){
-                Swal.fire({
-                  icon : 'Deleted',
-                  title: 'Your file has been deleted.',
-                  showConfirmbutton:false
-              }).then(()=>{
-                  location.reload()
-              })
-              }
-            }
-          })
-      }
-    })
-    }
-  </script>
-  <script>
-    function softdeleteproduct(productId){
-      Swal.fire({
-    title: 'Are you sure?',
-    text: "You are Softdeleting a product!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Confirm!'
-    }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-            url: '/admin/softdeleteproduct/'+productId,
-            method: 'get',
-            success : (response) =>{
-              if(response.status){
-                Swal.fire({
-                  icon : 'success',
-                  title: 'Your file has been Softdeleted.',
-                  showConfirmbutton:false
-              }).then(()=>{
-                  location.reload()
-              })
-              }
-            }
-          })
-  }
-})
-    }
-  </script>
 </body>
 
 </html>

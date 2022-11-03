@@ -21,7 +21,7 @@
                         <h3 class="sidebar-widget">Search Products</h3>
                         <div class="sidebar-search">
                             <form action="/search" method="post">
-                                <input type="text" name="search" placeholder="Search Products...">
+                                <input type="text" name="search" id="myInput" onkeyup="myFunction()" placeholder="Search Products...">
                                 <button type="submit"><i class="bi bi-search"></i></button>
                             </form>
                         </div>
@@ -65,7 +65,7 @@
                                 
                                     <div class="product-wrapper mb-35">
                                         
-                                            <div class="product-img">
+                                            <div class="product-img" >
                                                 
                                                 <a href="/productdetails/<%=result.id%>">
                                                     
@@ -83,9 +83,9 @@
                                                         <i class="bi bi-binoculars"></i>
                                                     </a>
                                                 </div>
-                                                <div class="product-content-wrapper">
+                                                <div class="product-content-wrapper" >
                                                     <div class="product-title-spreed">
-                                                        <h4><a href="product-details.html"><%=result.productname%></a></h4>
+                                                        <h4 id="myUL"><a href="product-details.html"><%=result.productname%></a></h4>
                                                         
                                                     </div>
                                                     <div class="product-price">

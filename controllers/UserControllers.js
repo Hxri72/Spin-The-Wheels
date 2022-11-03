@@ -6,6 +6,7 @@ const otpverification = require('../utils/otpgenerator')
 const productModel = require('../models/product')
 const cartModel = require('../models/cart')
 const wishlistModel = require('../models/wishlist')
+const bannerModel = require('../models/banner')
 
 
 let loggedIn = false;
@@ -21,20 +22,22 @@ module.exports = {
     },
     getUserHome :async (req,res)=>{
         if(loggedIn){
+            let banner = await bannerModel.find({})
             productModel.find({},(err,result)=>{
                 if(err){
                     console.log(err)
                 }else{
                     let user = req.session.user
-                    res.render('user/index',{user,result})
+                    res.render('user/index',{user,result,banner})
                 }
             })
         }else{
+            let banner = await bannerModel.find({})
             productModel.find({},(err,result)=>{
                 if(err){
                     console.log(err)
                 }else{
-                    res.render('user/index',{user:false,result})
+                    res.render('user/index',{user:false,result,banner})
                 }
             })
             
@@ -56,7 +59,13 @@ module.exports = {
         
     },
     getAboutUs:(req,res)=>{
-        res.render('user/about-us')
+        if(loggedIn){
+            let user = req.session.user
+            res.render('user/about-us',{user})
+        }else{
+            res.render('user/about-us',{user:false})
+        }
+        
     },
     getAddtoWishlist:async(req,res)=>{
         let productId = req.params.id
@@ -98,7 +107,8 @@ module.exports = {
         })
     },
     getUserWishlist : async(req,res) =>{
-        let userId = req.session.user._id
+        if(loggedIn){
+            let userId = req.session.user._id
         let viewWishlist = await wishlistModel.findOne({UserId:userId}).populate('products.productId').exec()
         wishlistModel.find({},(err,result)=>{
             if(err){
@@ -108,6 +118,10 @@ module.exports = {
                 res.render('user/wishlist',{user,result,viewWishlist})
             }
         })
+        }else{
+            res.redirect('/login')
+        }
+        
     },
     getdeleteProduct:async(req,res)=>{
         let userId = req.session.user

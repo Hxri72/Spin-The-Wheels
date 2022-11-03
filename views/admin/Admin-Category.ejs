@@ -53,6 +53,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/admin/adminBanner">
+            <i class="mdi mdi-content-paste menu-icon"></i>
+            <span class="menu-title">Banner Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/admin/adminproduct">
             <i class="mdi mdi-bullseye menu-icon"></i>
             <span class="menu-title">Destinations</span>
@@ -134,7 +140,7 @@
               <div class="userdiv" style="width:100%;">
                 
                 <form action="/admin/addCategory" method="post">
-                    <input class="categoryinput" type="text" name="category">
+                    <input class="categoryinput" type="text" name="category" required>
                     <button class="btn btn-primary" type="submit">Add Category</button>
                 </form>
                 <p style="color: red;"><%=categoryErr%></p>

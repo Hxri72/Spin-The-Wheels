@@ -46,21 +46,15 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin/adminproduct">
+          <a class="nav-link" href="pages/charts/chartjs.html">
             <i class="mdi mdi-package-variant menu-icon"></i>
             <span class="menu-title">Product Management</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/admin/adminproduct">
-            <i class="mdi mdi-bullseye menu-icon"></i>
-            <span class="menu-title">Destinations</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/adminproduct">
+          <a class="nav-link" href="/admin/adminBanner">
             <i class="mdi mdi-content-paste menu-icon"></i>
-            <span class="menu-title">News And Updates</span>
+            <span class="menu-title">Banner Management</span>
           </a>
         </li>
       </ul>
@@ -229,51 +223,29 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row" style="display:block;">
-            <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
+            <div class="col-lg-6 grid-margin stretch-card my-3" style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
-                <h1 class="text-center">EDIT PRODUCT</h1>
-                <form action="/admin/editproduct/<%=result[0].id%>" method="post" enctype="multipart/form-data">
+            <h1 class="text-center">ADD BANNER</h1>
+                <form  action="/admin/addbanner" method="post" enctype="multipart/form-data" style="text-align: -webkit-center;">
                     <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputEmail4">Product Name</label>
-                        <input name="productname" type="text" class="form-control" id="inputEmail4" placeholder="Product name" value="<%=result[0].productname%>">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputPassword4">Product category</label>
-                        <br>
-                        <select name="category" id="cars">
-                            
-                            <option><%=result[0].category%></option>
-                              
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputAddress">Description</label>
-                      <input value="<%=result[0].description%>" name="description" type="text" class="form-control" id="inputAddress" placeholder="Description">
-                    </div>
-                    
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputCity">Quantity</label>
-                        <input value="<%=result[0].quantity%>" name="quantity" type="number" class="form-control" id="inputCity">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputState">Price</label>
-                        <input value="<%=result[0].price%>" name="price" type="text" class="form-control" id="inputZip">
-                      </div>
                       
-                      <div class="form-group col-md-6">
-                        <label for="inputZip">Upload Image</label>
-                        <input value="<%=result[0].productImg[0]%>" accept="image/*" name="productImg" class="form-control form-control-lg" id="formFileLg" type="file" multiple/>
+                    </div>
+                    <div class="form-group col-md-6 ">
+                      <label for="inputAddress">Section</label>
+                      <input name="Section" type="text" class="form-control" id="inputAddress" placeholder="Description">
+                    </div>
+                    
+                    <div class="form-row justify-content-center" >
+
+                      
+                      <div class="form-group col-md-6" >
+                        <label for="inputZip" >Upload Image</label>
+                        <input name="bannerImg" class="form-control form-control-lg" id="formFileLg" type="file" multiple/>
                       </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">ADD PRODUCT</button>
+                    <button type="submit" class="btn btn-primary">ADD BANNER</button>
                   </form>
-                
-                
-              <hr>
               </div>
             </div>
             
