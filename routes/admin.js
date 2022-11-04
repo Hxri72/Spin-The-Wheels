@@ -30,6 +30,12 @@ router.get('/deletecategory/:category',AdminControllers.getdeleteCategory)
 
 router.get('/editproduct/:id',AdminControllers.getEditProduct)
 
+router.get('/editBanner/:id',AdminControllers.getEditbanner)
+
+router.get('/softdeletebanner/:id',AdminControllers.getSoftDeleteBanner)
+
+router.get('/undosoftdeletebanner/:id',AdminControllers.getUndoSoftDeleteBanner)
+
 router.get('/softdeleteproduct/:id',AdminControllers.getSoftDeleteProduct)
 
 router.get('/undosoftdeleteproduct/:id',AdminControllers.getUndoSoftDeleteProduct)
@@ -41,6 +47,8 @@ router.get('/adminproduct',AdminControllers.getAdminProduct)
 router.get('/addproduct',AdminControllers.getaddProduct)
 
 router.post('/addbanner',storageImg.array("bannerImg",2),AdminControllers.postAddBanner)
+
+router.post('/editBanner/:id',storageImg.array("bannerImg",2),AdminControllers.postEditBanner)
 
 router.post('/editproduct/:id',storageImg.array("productImg",2),AdminControllers.postEditProduct)
 

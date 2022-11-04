@@ -73,7 +73,7 @@
                                             </div>
                                             <% totalPrice = result.quantity*result.price +  totalPrice %>
                                             </th>
-                                            <th id="<%=result.productId%>totalPrice"><%=result.quantity*result.price%></th>
+                                            <th ><%=result.quantity*result.price%></th>
                                             
                                             
                                             <td style="padding: 0px 23px 0;">
@@ -99,7 +99,7 @@
                             </div>
                             <div class="update-checkout-cart">
                                 <div class="update-cart">
-                                    <a class="btn-style cr-btn" href="/checkout">
+                                    <a class="btn-style cr-btn" onclick="totalprice()">
                                         <span>checkout</span>
                                     </a>
                                 </div>
@@ -123,7 +123,7 @@
                             <ul>
                                 <li>
                                     sub total
-                                    <span><%=totalPrice%></span>
+                                    <span id="totalPrice"><%=totalPrice%></span>
                                 </li>
                                 <li>
                                     order total

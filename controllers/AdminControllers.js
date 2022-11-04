@@ -93,6 +93,15 @@ module.exports = {
         })
         
     },
+    getEditbanner:(req,res)=>{
+        bannerModel.find({_id:req.params.id},function(err,result){
+            if(err){
+                console.log('err')
+            }else{
+                res.render('admin/Edit-Banner',{result})
+            }
+        })
+    },
     getSoftDeleteProduct:async(req,res)=>{
         let productId = req.params.id
         await productModel.updateOne({_id:productId},{
@@ -101,7 +110,24 @@ module.exports = {
             }
         })
         res.json({status:true})
-        // res.redirect('/admin/adminproduct')
+    },
+    getSoftDeleteBanner:async(req,res)=>{
+        let bannerId = req.params.id
+        await bannerModel.updateOne({_id:bannerId},{
+            $set:{
+                bannerStatus:"false"
+            }
+        })
+        res.json({status:true})
+    },
+    getUndoSoftDeleteBanner:async(req,res)=>{
+        let bannerId = req.params.id
+        await bannerModel.updateOne({_id:bannerId},{
+            $set:{
+                bannerStatus:"true"
+            }
+        })
+        res.redirect('/admin/adminBanner')
     },
     getUndoSoftDeleteProduct:async(req,res)=>{
         let productId = req.params.id
@@ -125,7 +151,6 @@ module.exports = {
     },
     getUserBanner:(req,res)=>{
         bannerModel.find({},(err,result)=>{
-            console.log(result)
             if(err){
                 console.log(err)
             }else{
@@ -179,7 +204,6 @@ module.exports = {
         
     },
     postAddBanner:(req,res)=>{
-        console.log(req.files)
         const imagename = []
         for(file of req.files){
             imagename.push(file.filename)
@@ -193,6 +217,25 @@ module.exports = {
         res.redirect('/admin/adminbanner')
 
 
+    },
+    postEditBanner:(req,res)=>{
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        bannerModel.find({_id:req.params.id},async(err,data)=>{
+            if(data.length!==0){
+                await bannerModel.updateOne({_id:req.params.id},{
+                    $set:{
+                        Section:req.body.Section,
+                        bannerImg:imagename
+                    }
+                })
+                res.redirect('/admin/adminBanner')
+            }else{
+                console.log(err)
+            }
+        })
     },
     postAddProduct:(req,res)=>{
         const imagename = []

@@ -180,6 +180,14 @@ module.exports = {
         })
         
     },
+    getUserDestinations:(req,res)=>{
+        let user = req.session.user
+        res.render('user/destinations',{user})
+    },
+    getUserNews:(req,res)=>{
+        let user = req.session.user
+        res.render('user/news',{user})
+    },
     getProductDetails:(req,res)=>{ 
             productModel.find({_id:req.params.id},(err,result)=>{
                 if(err){
@@ -324,6 +332,7 @@ module.exports = {
         })
         res.json({status:true})
     },
+    
     postUpdateProfile:async(req,res)=>{
             userModel.findOne({Email:req.body.email},async(err,data)=>{
                 if(data){

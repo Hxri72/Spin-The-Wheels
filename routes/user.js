@@ -14,6 +14,10 @@ router.get('/aboutus',UserControllers.getAboutUs)
 
 router.get('/shop',UserControllers.getUserShop)
 
+router.get('/destinations',UserControllers.getUserDestinations)
+
+router.get('/news',UserControllers.getUserNews)
+
 router.get('/cart',UserControllers.getCart)
 
 router.get('/checkout',UserControllers.getCheckOut)
@@ -37,6 +41,8 @@ router.get('/deleteproduct/:id',UserControllers.getdeleteProduct)
 router.post('/search',UserControllers.postProductSearch)
 
 router.post('/cartinc/:id',UserControllers.postUserCartinc)
+
+// router.post('/totalBill/:total',UserControllers.posrUserTotal)
 
 router.post('/updateprofile',UserControllers.postUpdateProfile)
 
