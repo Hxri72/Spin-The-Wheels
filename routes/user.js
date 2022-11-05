@@ -10,6 +10,8 @@ router.get('/login',UserControllers.getUserlogin)
 
 router.get('/otp',UserControllers.getOtp)
 
+router.get('/resend',UserControllers.getResendOtp)
+
 router.get('/aboutus',UserControllers.getAboutUs)
 
 router.get('/shop',UserControllers.getUserShop)
@@ -42,7 +44,7 @@ router.post('/search',UserControllers.postProductSearch)
 
 router.post('/cartinc/:id',UserControllers.postUserCartinc)
 
-// router.post('/totalBill/:total',UserControllers.posrUserTotal)
+router.post('/totalBill/:total',UserControllers.postUserTotal)
 
 router.post('/updateprofile',UserControllers.postUpdateProfile)
 

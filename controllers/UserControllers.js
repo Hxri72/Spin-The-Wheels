@@ -306,6 +306,17 @@ module.exports = {
     getOtp:(req,res)=>{
         res.render('user/otp')
     },
+    getResendOtp:(req,res)=>{
+        req.session.otpgenerator = otpverification.otpgenerator();
+        console.log(req.session.otpgenerator)
+
+        // message sending
+        // otpverification.otpsender(req.session.otpgenerator)
+        // .then(()=>{
+        //     res.redirect('/otp')
+        // })
+        res.redirect('/otp')
+    },
     postProductSearch:async(req,res)=>{
         console.log(req.body)
         let product = await productModel.find({productname:req.body.search})
@@ -332,7 +343,9 @@ module.exports = {
         })
         res.json({status:true})
     },
-    
+    postUserTotal:(req,res)=>{
+        console.log(req.body)
+    },
     postUpdateProfile:async(req,res)=>{
             userModel.findOne({Email:req.body.email},async(err,data)=>{
                 if(data){
