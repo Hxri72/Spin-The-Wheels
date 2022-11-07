@@ -336,7 +336,4 @@
         animation: 'fade'
     });
 
-
-
-
 })(jQuery);

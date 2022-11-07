@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="../../css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -144,28 +145,29 @@
                     <thead>
                       <tr class="text-center">
                         <th>No</th>
-                        <th>Destination</th>
-                        <th>Destination Name</th>
-                        <th>Destination Type</th>
+                        <th>Destination Image</th>
+                        <th>Route</th>
+                        <th>Description</th>
                       </tr>
                       
                     </thead>
-                  
+                    
                     <tbody>
+                      <% result.forEach(function(result,index){%>
                         <tr class="text-center">
-                            <td>index</td>
-                            <td>destinations</td>
-                            <td>destinations</td>
-                            <td>destinations</td>
+                            <td><%=index+1%></td>
+                            <td style="width:17%;"><img src="/images/Destination-Images/<%=result.RouteImg[0]%>" style="width:50%;height:30%;border-radius:0px;"></td>
+                            <td><%=result.Route%></td>
+                            <td><%=result.Description%></td>
                             <td>
-                                <a class="btn btn-primary">Edit</a>
+                                <a class="btn btn-primary" href="/admin/editDestination/<%=result._id%>">Edit</a>
                             </td>  
                           
                             <td>
-                                <a class="btn btn-danger">SoftDelete</a>
+                                <a class="btn btn-danger" onclick="deleteDestination('<%=result._id%>')">Delete</a>
                             </td>
                         </tr>
-                       
+                      <%})%> 
                     </tbody>
                   
               </table>
@@ -210,6 +212,37 @@
   <!-- Custom js for this page-->
   <script src="../../js/chart.js"></script>
   <!-- End custom js for this page-->
+  <script>
+    function deleteDestination(destinationId){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: '/admin/deletedestination/'+destinationId,
+            method: 'get',
+            success : (response) =>{
+              if(response.status){
+                Swal.fire({
+                  icon : 'Deleted',
+                  title: 'Your file has been deleted.',
+                  showConfirmbutton:false
+              }).then(()=>{
+                  location.reload()
+              })
+              }
+            }
+          })
+      }
+    })
+    }
+  </script>
 </body>
 
 </html>

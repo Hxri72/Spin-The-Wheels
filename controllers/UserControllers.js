@@ -7,6 +7,8 @@ const productModel = require('../models/product')
 const cartModel = require('../models/cart')
 const wishlistModel = require('../models/wishlist')
 const bannerModel = require('../models/banner')
+const orderModel = require('../models/order')
+const destinationModel = require('../models/destination')
 
 
 let loggedIn = false;
@@ -181,8 +183,14 @@ module.exports = {
         
     },
     getUserDestinations:(req,res)=>{
-        let user = req.session.user
-        res.render('user/destinations',{user})
+        destinationModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/destinations',{user,result})
+            }
+        })
     },
     getUserNews:(req,res)=>{
         let user = req.session.user
@@ -197,6 +205,16 @@ module.exports = {
                     res.render('user/product-details',{user,result})
                 }
             })
+    },
+    getdestinationDetails: (req,res)=>{
+        destinationModel.find({_id:req.params.id},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/destinationDetails',{user,result})
+            }
+        })
     },
     getUserCart:async(req,res)=>{
         if(loggedIn){
@@ -295,9 +313,17 @@ module.exports = {
         
         
     },
-    getCheckOut : (req,res) =>{
+    getCheckOut :async(req,res) =>{
+        if(loggedIn){
+        let total = req.params.id
+        let userId = req.session.user._id
+        let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
         let user = req.session.user
-        res.render('user/checkout',{user})
+        res.render('user/checkout',{user,total,viewcart})
+        }else{
+            res.redirect('/login')
+        }
+        
     },
     getUserlogout:(req,res)=>{
         req.session.destroy()
@@ -343,8 +369,27 @@ module.exports = {
         })
         res.json({status:true})
     },
-    postUserTotal:(req,res)=>{
-        console.log(req.body)
+    postUserTotal:async(req,res)=>{
+        let totalPrice = req.params.id
+        let userId = req.session.user._id
+        orderModel.find({UserId:userId},async(err,data)=>{
+            if(data.length===0){
+                const order = new orderModel ({
+                    UserId : userId,
+                    totalPrice : totalPrice
+                })
+                order.save()
+            }else{
+                await orderModel.updateOne({UserId:userId},{
+                    $set : {
+                        totalPrice : totalPrice
+                    }
+                })
+            }
+        })
+        res.json({status:true})
+        // res.render('user/checkout',{user})
+
     },
     postUpdateProfile:async(req,res)=>{
             userModel.findOne({Email:req.body.email},async(err,data)=>{
@@ -363,6 +408,11 @@ module.exports = {
                     res.redirect('/profile')
                 
           
+    },
+    postUpdateDetails:async(req,res)=>{
+        console.log(req.body) 
+        let user = req.session.user._id
+        console.log(user)
     },
     PostUserOtp:(req,res)=>{
         const joinedbody=req.body.num1.join("")

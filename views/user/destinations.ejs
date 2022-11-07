@@ -9,37 +9,42 @@
     </div>
 </div>
 
-<div class="accessories-area pt-152 pb-130">
-    <div class="container-fluid">
-        <div class="section-title section-fluid text-center mb-60">
-            <p><span>SPIN THE WHEELS</span> - The most useful Bikershub which provides the riders to select the good destinations which they can chillout, purchase the bike accessories and riding gears, know the news and updates about the bikes, recent new models arrived etc.. </p>
-        </div>
-        <div class="accessories-wrapper">
-            <div class="product-accessories-active owl-carousel">
-                <div class="product-wrapper">
-                    <div class="product-img">
-                        <a href="#">
-                            <img src="/assets/img/banner/05tvmhavoc.jpg" alt="">
-                        </a>
-                        <div class="product-action">
+<div class="center col-lg-9 mt-5 ">
+                
+                <div class="grid-list-product-wrapper tab-content">
+                    <div id="new-product" class="product-grid product-view tab-pane active">
+                        
+                        <div class="row">
+                            <% result.forEach(function(result){%>
+                                <%console.log(result)%>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="blog-hm-wrapper mb-40">
+                                        <div class="blog-img">
+                                            <a href="/destinationDetails/<%=result.id%>"><img src="/images/Destination-Images/<%=result.RouteImg%>" alt="image" style="width:140%;"></a>
+                                            
+                                            
+                                        </div>
+                                        <div class="blog-hm-content">
+                                            <h3><a href="blog-details.html"><%=result.Route%></a></h3>
+                                            
+                                        </div>
+                                    </div>
+                                </div> 
                             
-                            <a class="action-cart-2" title="Wishlist" href="#">
-                                <i class="bi bi-binoculars"></i>
-                            </a>
-                            
-                        </div>
-                        <div class="product-content-wrapper-2">
-                            <div class="product-title-price-2 text-center">
-                                <span></span>
-                                <h4><a href="product-details.html"></a></h4>
-                            </div>
+                            <%})%>
                         </div>
                     </div>
+                </div>    
+                <div class="paginations text-center mt-20">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-angle-left"></i></a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li class="active"><a href="#"><i class="fa fa-angle-right"></i></a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
 
 <%- include('../user/includes/User-footer.ejs') %> 

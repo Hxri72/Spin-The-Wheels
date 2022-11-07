@@ -5,7 +5,9 @@ const userModel = require('../models/user')
 const categoryModel = require('../models/category')
 const productModel = require('../models/product')
 const bannerModel = require('../models/banner')
+const destinationModel = require('../models/destination')
 const bcrypt = require('bcrypt')
+const destination = require('../models/destination')
 
 
 
@@ -80,9 +82,17 @@ module.exports = {
         })
     },
     getAdminDestinations : (req,res)=>{
-        res.render('admin/Admin-Destination')
+        destinationModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Destination',{result})
+            }
+        })
     },
-
+    getaddDestinations : (req,res) => {
+        res.render('admin/Add-Destinations',{result:false})
+    },
     getEditProduct:(req,res)=>{
         productModel.find({_id:req.params.id},function(err,result){
             if(err){
@@ -92,6 +102,15 @@ module.exports = {
             }
         })
         
+    },
+    getEditDestination:(req,res)=>{
+        destinationModel.find({_id:req.params.id},function(err,result){
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Edit-Destination',{result})
+            }
+        })
     },
     getEditbanner:(req,res)=>{
         bannerModel.find({_id:req.params.id},function(err,result){
@@ -143,6 +162,11 @@ module.exports = {
         await productModel.deleteOne({_id:productId})
         res.json({status:true})
         // res.redirect('/admin/adminproduct')
+    },
+    getdeleteDestination:async(req,res)=>{
+        let destinationId = req.params.id
+        await destinationModel.deleteOne({_id:destinationId})
+        res.json({status:true})
     },
     getAdminlogout:(req,res)=>{
         req.session.destroy();
@@ -217,6 +241,46 @@ module.exports = {
         res.redirect('/admin/adminbanner')
 
 
+    },
+    postAddDestination:(req,res)=>{
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        const destination = new destinationModel({
+            Route : req.body.destination,
+            Description : req.body.description,
+            CommonRoute : req.body.commonroute,
+            RidingDistance : req.body.ridingdistance,
+            BestRidingSeason : req.body.ridingseason,
+            RouteImg : imagename
+        })
+        destination.save()
+        res.redirect('/admin/admindestinations')
+
+    },
+    postEditDestination:(req,res)=>{
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        destinationModel.find({id:req.params.id},async(err,data)=>{
+            if(data.length!==0){
+                await destinationModel.updateOne({_id:req.params.id},{
+                    $set : {
+                        Route : req.body.Route,
+                        Description : req.body.Description,
+                        CommonRoute : req.body.commonroute,
+                        RidingDistance : req.body.ridingdistance,
+                        BestRidingSeason : req.body.ridingseason,
+                        RouteImg : imagename
+                    }
+                })
+                res.redirect('/admin/admindestinations')
+            }else{
+                console.log(err)
+            }
+        })
     },
     postEditBanner:(req,res)=>{
         const imagename = []

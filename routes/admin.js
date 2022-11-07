@@ -1,5 +1,6 @@
 const express = require('express')
 const storageImg = require('../multer/multer')
+const desStorageImg = require('../multer/multer')
 const router = express.Router()
 const AdminControllers = require('../controllers/AdminControllers')
 
@@ -17,6 +18,10 @@ router.get('/adminBanner',AdminControllers.getUserBanner)
 router.get('/addbanner',AdminControllers.getAddBanner)
 
 router.get('/admindestinations',AdminControllers.getAdminDestinations)
+
+router.get('/addestination',AdminControllers.getaddDestinations)
+
+router.get('/editDestination/:id',AdminControllers.getEditDestination)
 
 router.get('/userblock/:id',AdminControllers.getUserBlock)
 
@@ -42,11 +47,17 @@ router.get('/undosoftdeleteproduct/:id',AdminControllers.getUndoSoftDeleteProduc
 
 router.get('/deleteproduct/:id',AdminControllers.getdeleteProduct)
 
+router.get('/deletedestination/:id',AdminControllers.getdeleteDestination)
+
 router.get('/adminproduct',AdminControllers.getAdminProduct)
 
 router.get('/addproduct',AdminControllers.getaddProduct)
 
 router.post('/addbanner',storageImg.array("bannerImg",2),AdminControllers.postAddBanner)
+
+router.post('/addestination',desStorageImg.array("destinationImg",2),AdminControllers.postAddDestination)
+
+router.post('/editdestination/:id',desStorageImg.array("destinationImg",2),AdminControllers.postEditDestination)
 
 router.post('/editBanner/:id',storageImg.array("bannerImg",2),AdminControllers.postEditBanner)
 

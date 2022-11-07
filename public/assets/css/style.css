@@ -1594,7 +1594,6 @@
 /* modal style */
 
 .modal-body {
-    display: flex;
     justify-content: space-between;
     padding: 50px;
 }
@@ -3092,15 +3091,7 @@ h1.cart-heading {
 .panel-title > a:focus {
     color: #ffb52f;
 }
-.coupon-accordion h3::before {
-    color: #000;
-    content: "";
-    display: inline-block;
-    font-family: fontawesome;
-    left: 1.5em;
-    position: absolute;
-    top: 1em;
-}
+
 .coupon-accordion span {
     cursor: pointer;
     color: #6f6f6f;
@@ -3940,6 +3931,11 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0; 
 }
+.center {
+    margin: auto;
+    width: 75%;
+    padding: 10px;
+  }
 
 
 

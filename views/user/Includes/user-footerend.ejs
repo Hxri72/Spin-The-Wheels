@@ -78,11 +78,13 @@
           url: '/totalBill/'+total,
           method: 'post',
           success : (response) =>{
+            console.log(response.status)
             if(response.status){
-              location.reload()
+              location.href = '/checkout/'+total
             }}
         })
         
   }
   
 </script>
+

@@ -15389,6 +15389,7 @@ button.bg-dark:focus {
 
 .justify-content-end {
   justify-content: flex-end !important;
+  width: 3%;
 }
 
 .justify-content-center {

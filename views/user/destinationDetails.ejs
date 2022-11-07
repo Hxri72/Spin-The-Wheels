@@ -1,0 +1,206 @@
+<%- include('../user/includes/layout.ejs') %>
+
+<%- include('../user/includes/User-header.ejs') %>
+
+
+<div class="breadcrumb-area pt-255 pb-170" style="background-image: url(/assets/img/banner/banner-4.jpg)">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+
+            <h2>DESTINATION DETAILS</h2>
+            
+        </div>
+    </div>
+</div>
+<div class="product-details-area fluid-padding-3 ptb-130">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-details-img-content">
+                    <div class="product-details-tab mr-40">
+                        <div class="product-details-large tab-content">
+                            <div class="tab-pane active" id="pro-details1">
+                                
+                                    <a href="assets/img/product-details/bl1.jpg">
+                                        
+                                        <img src="/images/Destination-Images/<%=result[0].RouteImg%>" alt="" style="width:105%;">
+                                    </a>
+                                
+                            </div>
+                            
+                            
+                            
+                            
+                        </div>
+                        <div class="product-details-small nav mt-12 product-dec-slider owl-carousel">
+                            <a class="active" href="#pro-details1">
+                                <img src="assets/img/product-details/s1.jpg" alt="">
+                            </a>
+                            <a href="#pro-details2">
+                                <img src="assets/img/product-details/s2.jpg" alt="">
+                            </a>
+                            <a href="#pro-details3">
+                                <img src="assets/img/product-details/s3.jpg" alt="">
+                            </a>
+                            <a href="#pro-details4">
+                                <img src="assets/img/product-details/s4.jpg" alt="">
+                            </a>
+                            <a href="#pro-details5">
+                                <img src="assets/img/product-details/s3.jpg" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product-details-content">
+                    <h2><%=result[0].Route%></h2>
+                    <hr style="margin:15px;">
+                    <div class="product-overview">
+                        <h5 class="pd-sub-title">Destination Overview</h5>
+                        <p><%=result[0].Description%></p>
+                    </div>
+                    <div class="product-overview">
+                        <h3 class="pd-sub-title">Common Route</h3>
+                        <p><%=result[0].CommonRoute%></p>
+                    </div>
+                    <div class="product-overview">
+                        <h3 class="pd-sub-title">Total Riding distance</h3>
+                        <p><%=result[0].RidingDistance%></p>
+                    </div>
+                    <div class="product-overview">
+                        <h3 class="pd-sub-title">Best Riding Season</h3>
+                        <p><%=result[0].BestRidingSeason%></p>
+                    </div>
+                
+                    
+                    <div class="product-share">
+                        <h5 class="pd-sub-title">Share</h5>
+                        <ul>
+                            <li>
+                                <a href="#"><i class="bi bi-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="bi bi-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"> <i class="bi bi-whatsapp"></i></a>
+                            </li>
+                        </ul>
+                        <hr style="margin:15px;">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer>
+    <div class="footer-top pt-100  theme-bg">
+        <div class="container">
+           <div class="row">
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="footer-widget mb-30">
+                        <div class="footer-logo">
+                            <a href="index.html">
+                                <img src="/assets/img/logo/STW-removebg-preview.png" alt="" style="width: 50%;">
+                            </a>
+                        </div>
+                        <div class="footer-about">
+                            <p><span>SPINTHEWHEELS</span>The most useful Bikershub which provides the riders to select the good destinations which they can chillout, purchase the bike accessories and riding gears, know the news and updates about the bikes, recent new models arrived etc..  </p>
+                            <div class="footer-support">
+                                <h5>FOR SUPPORT</h5>
+                                <span> 01245 658 698 (Toll Free)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="footer-widget mb-30 pl-60">
+                        <div class="footer-widget-title">
+                            <h3>QUICK LINK</h3>
+                        </div>
+                        <div class="quick-links">
+                            <ul>
+                                <li><a href="/aboutus">About us</a></li>
+                                <li><a href="/shop">Shop</a></li>
+                                <li><a href="#">Destinations</a></li>
+                                <li><a href="#">News and Updates</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="footer-widget mb-30">
+                        <div class="footer-widget-title">
+                            <h3>MOTOR TWEETS</h3>
+                        </div>
+                        <div class="food-widget-content pr-30">
+                            <div class="single-tweet">
+                                <p><a href="https://twitter.com/bikemag">@bikemag,</a> Bike Magazine showcases the sport of mountain biking like no other publication.</p>
+                            </div>
+                            <div class="single-tweet">
+                                <p><a href="https://twitter.com/DucatiMotor">@DucatiMotor,</a> Official Twitter account of Ducati Motor Holding.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <div class="footer-widget mb-30">
+                        <div class="footer-widget-title">
+                            <h3>CONTACT INFO</h3>
+                        </div>
+                        <div class="food-info-wrapper">
+                            <div class="food-address">
+                                <div class="food-info-title">
+                                    <span>Address</span>
+                                </div>
+                                <div class="food-info-content">
+                                    <p>276 Jhilli Nogor, 4th folor, Momen Tower, Kozhikode ,673008</p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom ptb-35 black-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-12">
+                    <div class="copyright">
+                        <p>©Copyright, 2022 All Rights Reserved by <a href="#">HASTECH</a></p>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <div class="footer-payment-method">
+                        <a href="#"><img alt="" src="../public/assets/img/banner/newsletter-bg.png"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/assets/js/vendor/jquery-1.12.0.min.js"></script>
+<script src="/assets/js/popper.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/isotope.pkgd.min.js"></script>
+<script src="/assets/js/imagesloaded.pkgd.min.js"></script>
+<script src="/assets/js/jquery.counterup.min.js"></script>
+<script src="/assets/js/waypoints.min.js"></script>
+<script src="/assets/js/ajax-mail.js"></script>
+<script src="/assets/js/owl.carousel.min.js"></script>
+<script src="/assets/js/plugins.js"></script>
+<script src="/assets/js/main.js"></script>
+
+
+<%- include('../user/includes/user-footerend.ejs')%>    
+
+
+
+
+ 
