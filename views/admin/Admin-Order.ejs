@@ -57,13 +57,13 @@
               <i class="mdi mdi-content-paste menu-icon"></i>
               <span class="menu-title">Banner Management</span>
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/adminOrders">
-              <i class="mdi mdi-content-paste menu-icon"></i>
-              <span class="menu-title">Order Management</span>
-            </a>
-          </li> 
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/adminOrders">
+            <i class="mdi mdi-content-paste menu-icon"></i>
+            <span class="menu-title">Order Management</span>
+          </a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="/admin/admindestinations">
             <i class="mdi mdi-bullseye menu-icon"></i>
@@ -144,38 +144,34 @@
           <div class="row" style="display:block;">
             <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
-                <a class="btn btn-primary" type="submit" href="/admin/addbanner">Add Banner</a>
-                
-                
                 <table class="table mt-5">
                     <thead>
                       <tr class="text-center">
                         <th>No</th>
-                        <th>Banner</th>
-                        <th>Section</th>
+                        <th>OrderId</th>
+                        <th>Total Price</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                        <th>Edit</th>
                       </tr>
                       
                     </thead>
                   
                     <tbody>
-                        <% result.forEach(function(result,index){%>
+                      <% result.forEach(function(result,index){%>
+                        <%console.log(result)%>
                         <tr class="text-center">
-                            <td><%=index+1%></td>
-                            <td><img  style="width: 80px;height: 73px;border-radius: 0;" src="/images/<%=result.bannerImg[0]%>"></td>
-                            <td><%=result.Section%></td>
-                            <td>
-                                <a class="btn btn-primary" href="/admin/editBanner/<%=result._id%>">Edit</a>
-                            </td>  
-                          
-                            <td>
-                              <%if(result.bannerStatus==="true"){%>
-                                <a class="btn btn-danger" onclick="softdeleteBanner('<%=result._id%>')">SoftDelete</a>
-                              <%}else{%>
-                                <a class="btn btn-danger" href="/admin/undosoftdeletebanner/<%=result._id%>">UndoSoftDelete</a>
-                              <%}%>
-                            </td>
+                            
+                          <td><%=index+1%></td>
+                          <td><%=result._id%></td>
+                          <td><%=result.totalPrice%></td>
+                          <td><%=result.paymentMode%></td>
+                          <td><%=result.paymentStatus%></td>
+                          <td>
+                            <a href="/admin/viewOrders/<%=result._id%>" class="btn btn-primary">View</a>
+                          </td>
                         </tr>
-                       <%})%>
+                      <%})%>  
                     </tbody>
                   
               </table>

@@ -27,7 +27,30 @@ let productSchema = new Schema ({
 })
 
 let addressSchema = new Schema ({
-
+        Fullname : {
+            type : String,
+            required:true
+        },
+        Address : {
+            type : String,
+            required:true
+        },
+        District : {
+            type : String,
+            required : true
+        },
+        Phone : {
+            type:String,
+            required : true
+        },
+        State : {
+            type:String,
+            required : true
+        },
+        Post : {
+            type : String,
+            required : true
+        }
 })
 
 let OrderSchema = new Schema ({
@@ -38,6 +61,14 @@ let OrderSchema = new Schema ({
     totalPrice:{
         type:Number,
         required:true
+    },
+    paymentMode : {
+      type:String,
+      required:false  
+    },
+    paymentStatus : {
+        type : String,
+        required:false
     },
 
     Products:[productSchema],

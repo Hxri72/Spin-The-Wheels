@@ -19,6 +19,8 @@ router.get('/addbanner',AdminControllers.getAddBanner)
 
 router.get('/admindestinations',AdminControllers.getAdminDestinations)
 
+router.get('/adminOrders',AdminControllers.getAdminOrders)
+
 router.get('/addestination',AdminControllers.getaddDestinations)
 
 router.get('/editDestination/:id',AdminControllers.getEditDestination)
@@ -36,6 +38,16 @@ router.get('/deletecategory/:category',AdminControllers.getdeleteCategory)
 router.get('/editproduct/:id',AdminControllers.getEditProduct)
 
 router.get('/editBanner/:id',AdminControllers.getEditbanner)
+
+router.get('/viewOrders/:id',AdminControllers.getViewOrders)
+
+router.get('/placeOrder/:id',AdminControllers.getplacedOrders)
+
+router.get('/shippedOrder/:id',AdminControllers.getshippedOrders)
+
+router.get('/cancelledOrder/:id',AdminControllers.getcancelledOrders)
+
+router.get('/deliveredOrder/:id',AdminControllers.getdeliveredOrders)
 
 router.get('/softdeletebanner/:id',AdminControllers.getSoftDeleteBanner)
 

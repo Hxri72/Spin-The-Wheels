@@ -319,7 +319,10 @@ module.exports = {
         let userId = req.session.user._id
         let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
         let user = req.session.user
+        
         res.render('user/checkout',{user,total,viewcart})
+        
+        
         }else{
             res.redirect('/login')
         }
@@ -342,6 +345,24 @@ module.exports = {
         //     res.redirect('/otp')
         // })
         res.redirect('/otp')
+    },
+    getPlacedOrder:(req,res)=>{
+        let user = req.session.user
+        res.render('user/placedOrder',{user})
+    },
+    getMyOrders:async(req,res) => {
+        if(loggedIn){
+            let userId = req.session.user._id
+            let viewOrders = await orderModel.find({UserId:userId}).populate('Products.productId').exec()
+            console.log(viewOrders.length)
+            console.log(viewOrders)
+            let user = req.session.user
+            res.render('user/myorders',{user,viewOrders})
+            
+            
+        }else{
+            res.redirect('/login')
+        }
     },
     postProductSearch:async(req,res)=>{
         console.log(req.body)
@@ -372,21 +393,9 @@ module.exports = {
     postUserTotal:async(req,res)=>{
         let totalPrice = req.params.id
         let userId = req.session.user._id
-        orderModel.find({UserId:userId},async(err,data)=>{
-            if(data.length===0){
-                const order = new orderModel ({
-                    UserId : userId,
-                    totalPrice : totalPrice
-                })
-                order.save()
-            }else{
-                await orderModel.updateOne({UserId:userId},{
-                    $set : {
-                        totalPrice : totalPrice
-                    }
-                })
-            }
-        })
+        let UserId = await userModel.findOne({UserId:userId})
+        console.log('hi',UserId)
+        
         res.json({status:true})
         // res.render('user/checkout',{user})
 
@@ -413,6 +422,74 @@ module.exports = {
         console.log(req.body) 
         let user = req.session.user._id
         console.log(user)
+    },
+    PostUserCheckout:async(req,res)=>{
+        let total =  req.params.id
+        let text1 = req.body.firstname
+        let text2 = req.body.lastname
+        let Fullname = text1.concat(text2)
+        let userId = req.session.user._id
+        let cart =  await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
+        let cartProducts = cart.products
+        let productArray = []
+        for(let i=0 ; i < cartProducts.length; i++){
+            let orderProducts = {}
+            orderProducts.productId = cartProducts[i].productId
+            orderProducts.productname = cartProducts[i].productname
+            orderProducts.price = cartProducts[i].price
+            orderProducts.quantity = cartProducts[i].quantity
+            orderProducts.productImg = cartProducts[i].productImg
+            productArray.push(orderProducts)
+        }
+        if(req.body.payment==='COD'){
+            orderModel.findOne({UserId:userId},async(err,data)=>{
+                if(data===null){
+                    const order = new orderModel ({
+                        UserId : userId,
+                        paymentMode : req.body.payment,
+                        totalPrice : total,
+                        paymentStatus : "Pending",
+                        Products : productArray,
+                        Address : {
+                            Fullname : Fullname,
+                            Address : req.body.address,
+                            District : req.body.district,
+                            Phone : req.body.phone,
+                            State : req.body.state,
+                            Post : req.body.post
+                        }
+                        
+                    })
+                    order.save()
+                    await cartModel.deleteOne({UserId:userId})
+                }else{
+                    const order = new orderModel ({
+                        UserId : userId,
+                        paymentMode : req.body.payment,
+                        totalPrice : total,
+                        paymentStatus : "Pending",
+                        Products : productArray,
+                        Address : {
+                            Fullname : Fullname,
+                            Address : req.body.address,
+                            District : req.body.district,
+                            Phone : req.body.phone,
+                            State : req.body.state,
+                            Post : req.body.post
+                        }
+                        
+                    })
+                    order.save()
+                    await cartModel.deleteOne({UserId:userId})
+                }
+            })
+            
+            let user = req.session.user
+            res.render('user/placedOrder',{user})
+        }else{
+
+        }
+
     },
     PostUserOtp:(req,res)=>{
         const joinedbody=req.body.num1.join("")

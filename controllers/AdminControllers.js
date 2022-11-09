@@ -6,6 +6,7 @@ const categoryModel = require('../models/category')
 const productModel = require('../models/product')
 const bannerModel = require('../models/banner')
 const destinationModel = require('../models/destination')
+const orderModel = require('../models/order')
 const bcrypt = require('bcrypt')
 const destination = require('../models/destination')
 
@@ -90,6 +91,15 @@ module.exports = {
             }
         })
     },
+    getAdminOrders:(req,res)=>{
+        orderModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Order',{result})
+            }
+        })
+    },
     getaddDestinations : (req,res) => {
         res.render('admin/Add-Destinations',{result:false})
     },
@@ -120,6 +130,53 @@ module.exports = {
                 res.render('admin/Edit-Banner',{result})
             }
         })
+    },
+    getViewOrders:(req,res)=>{
+        let orderId = req.params.id
+        orderModel.find({_id:orderId},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/View-Orders',{result})
+            }
+        })
+        
+    },
+    getplacedOrders:async(req,res)=>{
+        let orderId = req.params.id
+        await orderModel.updateOne({_id:orderId},{
+            $set:{
+                paymentStatus : "Placed"
+            }
+        })
+        res.redirect(`/admin/viewOrders/${orderId}`)
+    },
+    getshippedOrders:async(req,res)=>{
+        let orderId = req.params.id
+        await orderModel.updateOne({_id:orderId},{
+            $set:{
+                paymentStatus : "Shipped"
+            }
+        })
+        res.redirect(`/admin/viewOrders/${orderId}`)
+    },
+    getdeliveredOrders:async(req,res)=>{
+        let orderId = req.params.id
+        await orderModel.updateOne({_id:orderId},{
+            $set:{
+                paymentStatus : "Delivered"
+            }
+        })
+        res.redirect(`/admin/viewOrders/${orderId}`)
+    },
+    getcancelledOrders:async(req,res)=>{
+        let orderId = req.params.id
+        await orderModel.updateOne({_id:orderId},{
+            $set:{
+                paymentStatus : "Cancelled"
+            }
+        })
+        res.redirect(`/admin/viewOrders/${orderId}`)
     },
     getSoftDeleteProduct:async(req,res)=>{
         let productId = req.params.id

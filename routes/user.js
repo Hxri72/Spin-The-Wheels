@@ -42,6 +42,10 @@ router.get('/wishlist/:id',UserControllers.getAddtoWishlist)
 
 router.get('/deleteproduct/:id',UserControllers.getdeleteProduct)
 
+router.get('/placedOrder',UserControllers.getPlacedOrder)
+
+router.get('/MyOrders',UserControllers.getMyOrders)
+
 router.post('/search',UserControllers.postProductSearch)
 
 router.post('/cartinc/:id',UserControllers.postUserCartinc)
@@ -51,6 +55,8 @@ router.post('/totalBill/:id',UserControllers.postUserTotal)
 router.post('/updateprofile',UserControllers.postUpdateProfile)
 
 router.post('/updateDetails',UserControllers.postUpdateDetails)
+
+router.post('/payment/:id',UserControllers.PostUserCheckout)
 
 router.post('/postotp',UserControllers.PostUserOtp)
 
