@@ -1,90 +1,151 @@
 <script>
-    function addtocart(productId){
+  function addtocart(productId) {
     Swal.fire({
-      title: 'Item added to the cart',
-      icon: 'success',
+      title: "Item added to the cart",
+      icon: "success",
       showCancelButton: false,
     }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: '/addtocart/'+productId,
-            method: 'get',
-            success : (response) =>{
-              if(response.status){
-                Swal.fire({
-                  icon : 'Deleted',
-                  title: 'Your file has been deleted.',
-                  showConfirmbutton:false
-              }).then(()=>{
-                  location.reload()
-              })
-              }
-            }
-          })
-      }
-    })
-    }
-</script>
-
-<script>
-  function wishlist(productId){
-  Swal.fire({
-    title: 'Item added to the wishlist',
-    icon: 'success',
-    showCancelButton: false,
-  }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '/wishlist/'+productId,
-          method: 'get',
-          success : (response) =>{
-            if(response.status){
+          url: "/addtocart/" + productId,
+          method: "get",
+          success: (response) => {
+            if (response.status) {
               Swal.fire({
-                icon : 'Deleted',
-                title: 'Your file has been added.',
-                showConfirmbutton:false
-            }).then(()=>{
-                location.reload()
-            })
+                icon: "Deleted",
+                title: "Your file has been deleted.",
+                showConfirmbutton: false,
+              }).then(() => {
+                location.reload();
+              });
             }
-          }
-        })
+          },
+        });
+      }
+    });
+  }
+</script>
+
+<script>
+  function wishlist(productId) {
+    Swal.fire({
+      title: "Item added to the wishlist",
+      icon: "success",
+      showCancelButton: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/wishlist/" + productId,
+          method: "get",
+          success: (response) => {
+            if (response.status) {
+              Swal.fire({
+                icon: "Deleted",
+                title: "Your file has been added.",
+                showConfirmbutton: false,
+              }).then(() => {
+                location.reload();
+              });
+            }
+          },
+        });
+      }
+    });
+  }
+</script>
+
+<script>
+  function quantityChange(productId) {
+    let quantity = document.getElementById(productId + "quantity").value;
+    $.ajax({
+      url: "/cartinc/" + productId + "t" + quantity,
+      method: "post",
+      success: (response) => {
+        if (response.status) {
+          location.reload();
+        }
+      },
+    });
+  }
+</script>
+
+<script>
+  function totalprice() {
+    let total = document.getElementById("totalPrice").innerHTML;
+    console.log(total);
+    $.ajax({
+      url: "/totalBill/" + total,
+      method: "post",
+      success: (response) => {
+        console.log(response.status);
+        if (response.status) {
+          location.href = "/checkout/" + total;
+        }
+      },
+    });
+  }
+</script>
+
+<script>
+  function checkout(total) {
+    console.log('hi')
+    $.ajax({
+    url: '/checkout/'+total,
+    method: 'post',
+    data: $('#checkout').serialize(),
+    success: (response) => {
+    if (response.codSuccess) {
+      console.log('cod')
+      location.href='/placedOrder'
+
+    }else{
+      
+      console.log(response)
+      razorPayPayment(response)
     }
-  })
+    function razorPayPayment(order) {
+      var options = {
+      "key": "rzp_test_AQfrPxez6XIGSl", // Enter the Key ID generated from the Dashboard
+      "amount": order.amount , // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "SPIN THE WHEELS",
+      "description": "Test Transaction",
+      "image": "https://example.com/your_logo",
+      "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+        verifyPayment(response, order)
+         },
+       "prefill": {
+       "name": "Gaurav Kumar",
+         "email": "gaurav.kumar@example.com",
+         "contact": "9999999999"
+         },
+        "notes": {
+        "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+        "color": "#3399cc"
+         }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+
+      function verifyPayment(payment, order) {
+         $.ajax({
+         url: '/verifypayment',
+         data: { payment, order },
+         method: 'post',
+         success: (response) => {
+         if (response.status) {
+          location.href = '/placedorder'
+         }else{
+          alert('Payment Failed')
+         }
+        }
+      })
+    }
+  }
+}
+    })
   }
 </script>
-
-<script>
-  function quantityChange(productId){
-    let quantity = document.getElementById(productId + 'quantity').value
-    $.ajax({
-          url: '/cartinc/'+productId+"t"+quantity,
-          method: 'post',
-          success : (response) =>{
-            if(response.status){
-              location.reload()
-            }}
-        })
-        
-  }
-  
-</script>
-
-<script>
-  function totalprice(){
-    let total = document.getElementById('totalPrice').innerHTML
-    console.log(total)
-    $.ajax({
-          url: '/totalBill/'+total,
-          method: 'post',
-          success : (response) =>{
-            console.log(response.status)
-            if(response.status){
-              location.href = '/checkout/'+total
-            }}
-        })
-        
-  }
-  
-</script>
-

@@ -12,50 +12,23 @@
 <div class="blog-area pb-110 mt-5">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="blog-hm-wrapper mb-40">
-                    <div class="blog-img">
-                        <a href="blog-details.html"><img src="assets/img/blog/blog-hm-1.jpg" alt="image"></a>
-                        <div class="blog-date">
-                            <h4>24 October, 2022</h4>
+            <% result.forEach(function(result){%>
+                <div class="col-lg-4 col-md-6">
+                    <div class="blog-hm-wrapper mb-40">
+                        <div class="blog-img">
+                            <a href="/newsdetails/<%=result.id%>"><img src="/images/News-Images/<%=result.NewsImg[0]%>" alt="image"></a>
+                            <div class="blog-date">
+                                <h4>24 October, 2022</h4>
+                            </div>
+                            
                         </div>
-                        
-                    </div>
-                    <div class="blog-hm-content">
-                        <h3><a href="blog-details.html">Sports Motorbike for play in desert </a></h3>
-                        
+                        <div class="blog-hm-content">
+                            <h3><a href="/newsdetails/<%=result.id%>"><%=result.Headline%></a></h3>
+                            
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="blog-hm-wrapper mb-40">
-                    <div class="blog-img">
-                        <a href="blog-details.html"><img src="assets/img/blog/blog-hm-2.jpg" alt="image"></a>
-                        <div class="blog-date">
-                            <h4>22 February, 2022</h4>
-                        </div>
-                        
-                    </div>
-                    <div class="blog-hm-content">
-                        <h3><a href="blog-details.html">Motorbike Racing at October</a></h3>
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="blog-hm-wrapper mb-40">
-                    <div class="blog-img">
-                        <a href="blog-details.html"><img src="assets/img/blog/blog-hm-3.jpg" alt="image"></a>
-                        <div class="blog-date">
-                            <h4>20 February, 2022</h4>
-                        </div>
-                       
-                    </div>
-                    <div class="blog-hm-content">
-                        <h3><a href="blog-details.html">Latest Motorbike Release this Year </a></h3>         
-                    </div>
-                </div>
-            </div>
+            <%})%>
         </div>
     </div>
 </div>

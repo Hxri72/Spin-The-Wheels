@@ -7,6 +7,7 @@ const productModel = require('../models/product')
 const bannerModel = require('../models/banner')
 const destinationModel = require('../models/destination')
 const orderModel = require('../models/order')
+const newsModel = require('../models/news')
 const bcrypt = require('bcrypt')
 const destination = require('../models/destination')
 
@@ -90,6 +91,19 @@ module.exports = {
                 res.render('admin/Admin-Destination',{result})
             }
         })
+    },
+    getAdminNews : (req,res) =>{
+        newsModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-News',{result})
+            }
+    })
+        
+    },
+    getAddNews : (req,res)=>{
+        res.render('admin/Add-News')
     },
     getAdminOrders:(req,res)=>{
         orderModel.find({},(err,result)=>{
@@ -225,6 +239,11 @@ module.exports = {
         await destinationModel.deleteOne({_id:destinationId})
         res.json({status:true})
     },
+    getdeleteNews:async(req,res)=>{
+        let newsId = req.params.id
+        await newsModel.deleteOne({_id:newsId})
+        res.json({status:true})
+    },
     getAdminlogout:(req,res)=>{
         req.session.destroy();
         loggedIn = false;
@@ -284,6 +303,15 @@ module.exports = {
         })
         
     },
+    geteditNews : (req,res) => {
+        newsModel.find({_id:req.params.id},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Edit-News',{result})
+            }
+        })
+    },
     postAddBanner:(req,res)=>{
         const imagename = []
         for(file of req.files){
@@ -298,6 +326,20 @@ module.exports = {
         res.redirect('/admin/adminbanner')
 
 
+    },
+    postAddNews : (req,res) => {
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+
+        const news = new newsModel({
+            Headline : req.body.Headline,
+            Description : req.body.Description,
+            NewsImg : imagename
+        })
+        news.save()
+        res.redirect('/admin/adminnews')
     },
     postAddDestination:(req,res)=>{
         const imagename = []
@@ -396,6 +438,27 @@ module.exports = {
             }else{
                 console.log(err)
             }
+        })
+    },
+    postEditNews:(req,res) => {
+        const imagename = []
+        for(file of req.files){
+            imagename.push(file.filename)
+        }
+        newsModel.find({_id:req.params.id},async(err,data)=>{
+            if(data!==0){
+                await productModel.updateOne({_id:req.params.id},{
+                    $set:{
+                        Headline : req.body.Headline,
+                        Description : req.body.Description,
+                        NewsImg : imagename
+                    }
+                })
+                res.redirect('/admin/adminnews')
+            }else{
+                console.log(err)
+            }
+            
         })
     },
     postAddCategory:(req,res)=>{

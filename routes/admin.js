@@ -1,6 +1,7 @@
 const express = require('express')
 const storageImg = require('../multer/multer')
-const desStorageImg = require('../multer/multer')
+const desStorageImg = require('../multer/multerDestinations')
+const NewsImg = require('../multer/multer-News')
 const router = express.Router()
 const AdminControllers = require('../controllers/AdminControllers')
 
@@ -18,6 +19,10 @@ router.get('/adminBanner',AdminControllers.getUserBanner)
 router.get('/addbanner',AdminControllers.getAddBanner)
 
 router.get('/admindestinations',AdminControllers.getAdminDestinations)
+
+router.get('/adminnews',AdminControllers.getAdminNews)
+
+router.get('/addnews',AdminControllers.getAddNews)
 
 router.get('/adminOrders',AdminControllers.getAdminOrders)
 
@@ -61,11 +66,17 @@ router.get('/deleteproduct/:id',AdminControllers.getdeleteProduct)
 
 router.get('/deletedestination/:id',AdminControllers.getdeleteDestination)
 
+router.get('/deletenews/:id',AdminControllers.getdeleteNews)
+
 router.get('/adminproduct',AdminControllers.getAdminProduct)
 
 router.get('/addproduct',AdminControllers.getaddProduct)
 
+router.get('/editNews/:id',AdminControllers.geteditNews)
+
 router.post('/addbanner',storageImg.array("bannerImg",2),AdminControllers.postAddBanner)
+
+router.post('/addnews',NewsImg.array("NewsImg",2),AdminControllers.postAddNews)
 
 router.post('/addestination',desStorageImg.array("destinationImg",2),AdminControllers.postAddDestination)
 
@@ -74,6 +85,8 @@ router.post('/editdestination/:id',desStorageImg.array("destinationImg",2),Admin
 router.post('/editBanner/:id',storageImg.array("bannerImg",2),AdminControllers.postEditBanner)
 
 router.post('/editproduct/:id',storageImg.array("productImg",2),AdminControllers.postEditProduct)
+
+router.post('/editnews/:id',NewsImg.array("NewsImg",2),AdminControllers.postEditNews)
 
 router.post('/addproduct',storageImg.array("productImg",2),AdminControllers.postAddProduct)
 

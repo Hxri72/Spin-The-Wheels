@@ -9,7 +9,10 @@ const wishlistModel = require('../models/wishlist')
 const bannerModel = require('../models/banner')
 const orderModel = require('../models/order')
 const destinationModel = require('../models/destination')
-
+const categoryModel = require('../models/category')
+const newsModel = require('../models/news')
+const Razorpay = require('razorpay');
+const crypto = require('crypto')
 
 let loggedIn = false;
 let Err = null;
@@ -24,22 +27,26 @@ module.exports = {
     },
     getUserHome :async (req,res)=>{
         if(loggedIn){
+            let news = await newsModel.find({})
+            let destination = await destinationModel.find({})
             let banner = await bannerModel.find({})
             productModel.find({},(err,result)=>{
                 if(err){
                     console.log(err)
                 }else{
                     let user = req.session.user
-                    res.render('user/index',{user,result,banner})
+                    res.render('user/index',{user,result,banner,destination,news})
                 }
             })
         }else{
+            let news = await newsModel.find({})
+            let destination = await destinationModel.find({})
             let banner = await bannerModel.find({})
             productModel.find({},(err,result)=>{
                 if(err){
                     console.log(err)
                 }else{
-                    res.render('user/index',{user:false,result,banner})
+                    res.render('user/index',{user:false,result,banner,destination,news})
                 }
             })
             
@@ -171,13 +178,15 @@ module.exports = {
         })
         res.redirect('/cart')
     },
-    getUserShop:(req,res)=>{
+    getUserShop:async(req,res)=>{
+        let category = await  categoryModel.find({})
+        console.log(category)
         productModel.find({},(err,result)=>{
             if(err){
                 console.log(err)
             }else{
                 let user = req.session.user
-                res.render('user/shop',{user,result})
+                res.render('user/shop',{user,result,category})
             }
         })
         
@@ -193,8 +202,15 @@ module.exports = {
         })
     },
     getUserNews:(req,res)=>{
-        let user = req.session.user
-        res.render('user/news',{user})
+        newsModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/news',{user,result})
+            }
+        })
+        
     },
     getProductDetails:(req,res)=>{ 
             productModel.find({_id:req.params.id},(err,result)=>{
@@ -213,6 +229,16 @@ module.exports = {
             }else{
                 let user = req.session.user
                 res.render('user/destinationDetails',{user,result})
+            }
+        })
+    },
+    getnewsDetails : (req,res) => {
+        newsModel.find({_id:req.params.id},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/newsDetails',{user,result})
             }
         })
     },
@@ -355,7 +381,6 @@ module.exports = {
             let userId = req.session.user._id
             let viewOrders = await orderModel.find({UserId:userId}).populate('Products.productId').exec()
             console.log(viewOrders.length)
-            console.log(viewOrders)
             let user = req.session.user
             res.render('user/myorders',{user,viewOrders})
             
@@ -363,6 +388,18 @@ module.exports = {
         }else{
             res.redirect('/login')
         }
+    },
+    getcategoryProduct:async(req,res)=>{
+        let category = await categoryModel.find({})
+        let categoryName = req.params.category
+        productModel.find({category:categoryName},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                let user = req.session.user
+                res.render('user/shop',{user,result,category})
+            }
+        })
     },
     postProductSearch:async(req,res)=>{
         console.log(req.body)
@@ -394,7 +431,7 @@ module.exports = {
         let totalPrice = req.params.id
         let userId = req.session.user._id
         let UserId = await userModel.findOne({UserId:userId})
-        console.log('hi',UserId)
+
         
         res.json({status:true})
         // res.render('user/checkout',{user})
@@ -424,6 +461,8 @@ module.exports = {
         console.log(user)
     },
     PostUserCheckout:async(req,res)=>{
+        console.log(req.body)
+        console.log(req.params.id)
         let total =  req.params.id
         let text1 = req.body.firstname
         let text2 = req.body.lastname
@@ -449,7 +488,8 @@ module.exports = {
                         paymentMode : req.body.payment,
                         totalPrice : total,
                         paymentStatus : "Pending",
-                        Products : productArray,
+                        Date : new Date(),
+                        Products : productArray, 
                         Address : {
                             Fullname : Fullname,
                             Address : req.body.address,
@@ -468,6 +508,7 @@ module.exports = {
                         paymentMode : req.body.payment,
                         totalPrice : total,
                         paymentStatus : "Pending",
+                        Date : new Date(),
                         Products : productArray,
                         Address : {
                             Fullname : Fullname,
@@ -485,10 +526,67 @@ module.exports = {
             })
             
             let user = req.session.user
-            res.render('user/placedOrder',{user})
+            res.json({codSuccess:true})
+            // res.render('user/placedOrder',{user})
         }else{
+            const order = new orderModel ({
+                UserId : userId,
+                paymentMode : req.body.payment,
+                totalPrice : total,
+                paymentStatus : "Pending",
+                Date : new Date(),
+                Products : productArray,
+                Address : {
+                    Fullname : Fullname,
+                    Address : req.body.address,
+                    District : req.body.district,
+                    Phone : req.body.phone,
+                    State : req.body.state,
+                    Post : req.body.post
+                }
+                
+            })
+            order.save()
+            
+            req.session.orderId = order._id
 
+            var instance = new Razorpay({
+                key_id: 'rzp_test_AQfrPxez6XIGSl',
+                key_secret: 'asHbACGyR2opOxqcRomRwPVE',
+            });
+
+            var options = {
+                amount: total*100,  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: ""+req.session.orderId
+              };
+              instance.orders.create(options, function(err, order) {
+                res.json(order)
+                });
         }
+
+    },
+    postverifyPayment:async(req,res)=>{
+
+        let userData = req.session.user
+        userId = userData._id
+       console.log(req.body);
+       let details = req.body
+       
+       let hmac = crypto.createHmac('sha256','asHbACGyR2opOxqcRomRwPVE')
+       hmac.update(details.payment.razorpay_order_id+'|'+ details.payment.razorpay_payment_id);
+       hmac = hmac.digest('hex')
+       if(hmac==details.payment.razorpay_signature){
+        orderId = req.session.orderId
+        console.log(orderId);
+        await orderModel.findByIdAndUpdate(orderId,{paymentStatus:"Pending"})
+        await cartModel.findOneAndDelete({ UserId: userId })
+        console.log('payment success')
+        res.json({status:true})
+       }else{    
+        console.log("payment failed");
+        res.json({status:'false'})
+       }
 
     },
     PostUserOtp:(req,res)=>{

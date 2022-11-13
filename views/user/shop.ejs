@@ -20,24 +20,31 @@
                     <div class="sidebar-widget pb-55">
                         <h3 class="sidebar-widget">Search Products</h3>
                         <div class="sidebar-search">
+                            
                             <form action="/search" method="post">
-                                <input type="text" name="search" id="myInput" onkeyup="myFunction()" placeholder="Search Products...">
-                                <button type="submit"><i class="bi bi-search"></i></button>
+                                
+                                <input data-search type="search" name="search" id="myInput" onclick="myFunction(`<%=result%>`)"  placeholder="Search Products...">
+                                <button type="submit" ><i class="bi bi-search"></i></button>
+                                
+                                
+                                
                             </form>
+                            
                         </div>
                     </div>
-                    <div class="sidebar-widget pb-50">
-                        <h3 class="sidebar-widget">by categories</h3>
-                        <div class="widget-categories">
-                            <ul>
-                                <li><a href="#">Riding Gears</a></li>
-                                <li><a href="#">Spare Parts</a></li>
-                                <li><a href="#">Moto Merchandise</a></li>
-                                <li><a href="#">Luggage</a></li>
-                                <li><a href="#">Bike Protection</a></li>
-                            </ul>
+                    
+                        <div class="sidebar-widget pb-50">
+                            <h3 class="sidebar-widget">by categories</h3>
+                            <% category.forEach(function(result){%>
+                            <div class="widget-categories">
+                                <ul>
+                                    <li class="mb-2"><a href="/categoryproduct/<%=result.category%>"><%=result.category%></a></li>                                   
+                                </ul>
+                            </div>
+                            <%})%>
                         </div>
-                    </div>
+                    
+                    
                     <div class="sidebar-widget mb-55">
                         <h3 class="sidebar-widget">by price</h3>
                         <div class="price_filter mr-60">
@@ -60,7 +67,7 @@
                         
                         <div class="row">
                             <% result.forEach(function(result){%>
-                            <%if(result.productStatus==="true"){%>
+                            <%if(result.productStatus==="true"){%>  
                                 <div class="product-width col-md-6 col-xl-4 col-lg-6">
                                 
                                     <div class="product-wrapper mb-35">
@@ -84,9 +91,8 @@
                                                     </a>
                                                 </div>
                                                 <div class="product-content-wrapper" >
-                                                    <div class="product-title-spreed">
-                                                        <h4 id="myUL"><a href="product-details.html"><%=result.productname%></a></h4>
-                                                        
+                                                    <div class="product-title-spreed" data-productname>
+                                                        <h4 id="myUL"><a href="product-details.html"><%=result.productname%></a></h4>   
                                                     </div>
                                                     <div class="product-price">
                                                         <span><%=result.price%></span>

@@ -130,5 +130,34 @@
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/preloader.js"></script>
+<script>
+    function myFunction(result){
 
+      console.log(result)
+      console.log('hi')
+      let user = []
+
+
+            var res = [];
+            res.push(result)
+            console.log(res)
+            
+            user = res.map(product => {
+                // let productname = document.querySelector("[data-productname]")
+                console.log({product:product[0].productname})
+
+                return {product:product.productname}
+            });
+            
+        
+        
+      
+      const searchInput = document.querySelector("[data-search]")
+      searchInput.addEventListener("input",(e)=>{
+        const value = e.target.value
+        console.log(user)
+      })
+    }
+    
+  </script>
 <%- include('../../user/includes/user-footerend.ejs')%>  

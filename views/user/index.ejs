@@ -66,18 +66,20 @@
                         </div>
                         <div class="col-md-4 col-lg-4">
                             <div class="banner-wrapper mb-30">
-                                <a href="#"><img src="assets/img/banner/banner2.jpg" alt="image"></a>
+                                <a href="/destinations"><img src="assets/img/banner/banner2.jpg" alt="image">
                                 <div class="banner-content">
                                     <h2>FIND DESTINATIONS</h2>
                                 </div>
+                                </a>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4">
                             <div class="banner-wrapper mb-30">
-                                <a href="#"><img src="assets/img/banner/banner-3.jpg" alt="image"></a>
+                                <a href="/news"><img src="assets/img/banner/banner-3.jpg" alt="image">
                                 <div class="banner-content">
                                     <h2>FIND NEWS AND UPDATES</h2>
                                 </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -97,19 +99,17 @@
                                 <div class="product-wrapper">
                                     <div class="product-img">
                                         
-                                        <a href="#">
+                                        <a href="/productdetails/<%=result.id%>">
                                             <img src="/images/<%=result.productImg[0]%>"  alt="">
                                         </a>
                                         <div class="product-action">
-                                            <a class="action-plus-2" title="Add To Cart" href="#">
+                                            <a class="action-plus-2" title="Add To Cart" onclick="addtocart('<%=result.id%>')" href="#">
                                                 <i class="bi bi-cart"></i>
                                             </a>
-                                            <a class="action-cart-2" title="Wishlist" href="#">
+                                            <a class="action-cart-2" title="Wishlist" onclick="wishlist('<%=result.id%>')" href="#">
                                                 <i class="bi bi-heart"></i>
                                             </a>
-                                            <a class="action-reload" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">
-                                                <i class="bi bi-binoculars"></i>
-                                            </a>
+                                            
                                         </div>
                                         <div class="product-content-wrapper-2">
                                             <div class="product-title-price-2 text-center">
@@ -139,15 +139,10 @@
                                 </div>
                                 <div class="col-lg-5 col-md-12 col-12">
                                     <div class="latest-product-content">
-                                        <h2 class="animated">LATEST OFFER <br>FOR POPULAR BIKES</h2>
-                                        <p class="animated"><span>OSWAN</span> the most latgest bike store in the wold can serve you latest            qulity of motorcycle also you can sell here your motorcycle it quo minus iduod maxie placeat facere possimus, omnis voluptas assumenda est, omnis dolor llendus. Temporibus autem quibusdam </p>
-                                        <div class="latest-price">
-                                            <h3 class="animated">NOW AT <span>$1250</span></h3>
-                                            <span class="animated">35% DISCOUNT</span>
-                                        </div>
-                                        <div class="latext-btn">
-                                            <a class="animated" href="#">SELECT A BIKE</a>
-                                        </div>
+                                        
+                                        <p class="animated"><span>SPIN THE WHEELS</span>- The most useful Bikershub which provides the riders to select the good destinations which they can chillout, purchase the bike accessories and riding gears, know the news and updates about the bikes, recent new models arrived etc.. </p>
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -161,15 +156,9 @@
                                 </div>
                                 <div class="col-lg-5 col-col-12 col-12">
                                     <div class="latest-product-content">
-                                        <h2 class="animated">LATEST OFFER <br>FOR POPULAR BIKES</h2>
-                                        <p class="animated"><span>OSWAN</span> the most latgest bike store in the wold can serve you latest            qulity of motorcycle also you can sell here your motorcycle it quo minus iduod maxie placeat facere possimus, omnis voluptas assumenda est, omnis dolor llendus. Temporibus autem quibusdam </p>
-                                        <div class="latest-price">
-                                            <h3 class="animated">NOW AT <span>$1250</span></h3>
-                                            <span class="animated">35% DISCOUNT</span>
-                                        </div>
-                                        <div class="latext-btn">
-                                            <a class="animated" href="#">SELECT A BIKE</a>
-                                        </div>
+                                        <p class="animated"><span>SPIN THE WHEELS</span>- The most useful Bikershub which provides the riders to select the good destinations which they can chillout, purchase the bike accessories and riding gears, know the news and updates about the bikes, recent new models arrived etc.. </p>
+                                        
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -186,19 +175,13 @@
                     </div>
                     <div class="accessories-wrapper">
                         <div class="product-accessories-active owl-carousel">
-                        <% result.forEach(function(result){%>      
+                        <% destination.forEach(function(result){%>     
                             <div class="product-wrapper">
                                 <div class="product-img">
-                                    <a href="#">
-                                        <img src="/assets/img/banner/05tvmhavoc.jpg" alt="">
+                                    <a href="/destinationDetails/<%=result.id%>">
+                                        <img src="/images/Destination-Images/<%=result.RouteImg[0]%>" alt="">
                                     </a>
-                                    <div class="product-action">
-                                        
-                                        <a class="action-cart-2" title="Wishlist" href="#">
-                                            <i class="bi bi-binoculars"></i>
-                                        </a>
-                                        
-                                    </div>
+                                    
                                     <div class="product-content-wrapper-2">
                                         <div class="product-title-price-2 text-center">
                                             <span></span>
@@ -207,9 +190,11 @@
                                     </div>
                                 </div>
                             </div>
-                        <%}) %>
+                            <%}) %>
                         </div>
                     </div>
+                    
+                    
                 </div>
             </div>
             
@@ -220,50 +205,23 @@
                         
                     </div>
                     <div class="row">
+                        <% news.forEach(function(result,index){%>    
                         <div class="col-lg-4 col-md-6">
                             <div class="blog-hm-wrapper mb-40">
                                 <div class="blog-img">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog-hm-1.jpg" alt="image"></a>
+                                    <a href="blog-details.html"><img src="/images/News-Images/<%=result.NewsImg[0]%>" alt="image"></a>
                                     <div class="blog-date">
                                         <h4>24 October, 2022</h4>
                                     </div>
                                     
                                 </div>
                                 <div class="blog-hm-content">
-                                    <h3><a href="blog-details.html">Sports Motorbike for play in desert </a></h3>
+                                    <h3><a href="blog-details.html"><%=result.Headline%></a></h3>
                                     
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="blog-hm-wrapper mb-40">
-                                <div class="blog-img">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog-hm-2.jpg" alt="image"></a>
-                                    <div class="blog-date">
-                                        <h4>22 February, 2022</h4>
-                                    </div>
-                                    
-                                </div>
-                                <div class="blog-hm-content">
-                                    <h3><a href="blog-details.html">Motorbike Racing at October</a></h3>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="blog-hm-wrapper mb-40">
-                                <div class="blog-img">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog-hm-3.jpg" alt="image"></a>
-                                    <div class="blog-date">
-                                        <h4>20 February, 2022</h4>
-                                    </div>
-                                   
-                                </div>
-                                <div class="blog-hm-content">
-                                    <h3><a href="blog-details.html">Latest Motorbike Release this Year </a></h3>         
-                                </div>
-                            </div>
-                        </div>
+                        <%})%>
                     </div>
                 </div>
             </div>

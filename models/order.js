@@ -64,11 +64,15 @@ let OrderSchema = new Schema ({
     },
     paymentMode : {
       type:String,
-      required:false  
+      required:true  
     },
     paymentStatus : {
         type : String,
-        required:false
+        required : true
+    },
+    Date : {
+        type : String ,
+        required : true
     },
 
     Products:[productSchema],
