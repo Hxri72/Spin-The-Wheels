@@ -16,11 +16,18 @@
 <section class="h-100 gradient-custom">
     <div class="container py-5 h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-lg-10 col-xl-8">
+        <div class="col-lg-10 col-xl-8"> 
           <% viewOrders.forEach(function(result){%>
           <div class="card" style="border-radius: 10px;">
             <div class="card-header px-4 py-5">
               <h5 class="text-muted mb-0">Thanks for your Order, <span style="color:#001232;"><%=user.Fullname%></span>!</h5>
+              <%if(result.paymentStatus!=="Cancelled"){%>
+                <%if(result.paymentStatus!=="Delivered"){%>
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-danger" type="button" onclick="cancelOrder('<%=result.id%>')" style="border-radius:3px ;">Cancel Order</button>
+                  </div>
+                  <%}%>
+                <%}%> 
             </div>
             <div class="card-body p-4">
                 <div class="card shadow-0 border mb-4">
@@ -45,23 +52,23 @@
                           <% if(i===0){%>
                             <%if(result.paymentStatus==="Pending"){%>
                             <div class="col-md-4 mt-3 text-center d-flex justify-content-center align-items-center">
-                              <p  style="color:blue;">Order Pending</p>
+                              <p  style="color:blue;font-weight: 600;">Order Pending</p>
                             </div>
                             <%}else if(result.paymentStatus==="Placed"){%>
                               <div class="col-md-4 mt-3 text-center d-flex justify-content-center align-items-center">
-                                <p  style="color:blue;">Order Placed</p>
+                                <p  style="color:blue;font-weight: 600;">Order Placed</p>
                               </div>
                             <%}else if(result.paymentStatus==="Shipped"){%>
                               <div class="col-md-4 mt-3 text-center d-flex justify-content-center align-items-center">
-                                <p  style="color:blue;">Order Shipped</p>
+                                <p  style="color:blue;font-weight: 600;">Order Shipped</p>
                               </div>
                             <%}else if(result.paymentStatus==="Delivered"){%>
                               <div class="col-md-4 mt-3 text-center d-flex justify-content-center align-items-center">
-                                <p  style="color:green;">Order Delivered</p>
+                                <p  style="color:green;font-weight: 600;">Order Delivered</p>
                               </div>
                             <%}else if(result.paymentStatus==="Cancelled"){%>
                               <div class="col-md-4 mt-3 text-center d-flex justify-content-center align-items-center">
-                                <p  style="color:red;">Order Cancelled</p>
+                                <p  style="color:red;font-weight: 600;">Order Cancelled</p>
                                 
                               </div>
                             <%}%>
@@ -70,47 +77,47 @@
                         </div>
                       <%}%>
                       
-                      
+                      <%if(result.paymentStatus!=="Cancelled"){%>
                       <hr class="mb-4" style="background-color: #e0e0e0; opacity: 1;">
                       <div class="row d-flex align-items-center">
                         <div class="col-md-2">
                           <p class="text-muted mb-0 small">Track Order</p>
                         </div>
-                        <div class="col-md-10">
-                          <div class="progress" style="height: 6px; border-radius: 16px;">
-                            <%if(result.paymentStatus==="Pending"){%>
-                            <div class="progress-bar" role="progressbar"
-                              style="width: 15%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
-                              aria-valuemin="0" aria-valuemax="100">
-                            </div>
-                            <%}else if(result.paymentStatus==="Placed"){%>
+                        
+                          <div class="col-md-10">
+                            <div class="progress" style="height: 6px; border-radius: 16px;">
+                              <%if(result.paymentStatus==="Pending"){%>
                               <div class="progress-bar" role="progressbar"
-                              style="width: 42%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
-                              aria-valuemin="0" aria-valuemax="100">
+                                style="width: 4%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
+                                aria-valuemin="0" aria-valuemax="100">
                               </div>
-                            <%}else if(result.paymentStatus==="Shipped"){%>
-                              <div class="progress-bar" role="progressbar"
-                              style="width: 68%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
-                              aria-valuemin="0" aria-valuemax="100">
-                              </div>
-                            <%}else if(result.paymentStatus==="Delivered"){%>
-                              <div class="progress-bar" role="progressbar"
-                              style="width: 100%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
-                              aria-valuemin="0" aria-valuemax="100">
-                              </div>
-                            <%}else if(result.paymentStatus==="Cancelled"){%>
-                              
+                              <%}else if(result.paymentStatus==="Placed"){%>
+                                <div class="progress-bar" role="progressbar"
+                                style="width: 22%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
+                                aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                              <%}else if(result.paymentStatus==="Shipped"){%>
+                                <div class="progress-bar" role="progressbar"
+                                style="width: 57%; border-radius: 16px; background-color: #001232;" aria-valuenow="65"
+                                aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                              <%}else if(result.paymentStatus==="Delivered"){%>
+                                <div class="progress-bar" role="progressbar"
+                                style="width: 100%; border-radius: 16px; background-color: green;" aria-valuenow="65"
+                                aria-valuemin="0" aria-valuemax="100">
+                                </div>
                               <%}%>
+                            </div>
+                            <div class="d-flex justify-content-around mb-1">
+                              <p class="text-muted mt-1 mb-0 small ms-xl-5">Order Placed</p>
+                              <p class="text-muted mt-1 mb-0 small ms-xl-5">Shipped</p>
+                              <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
+                            </div>
                           </div>
-                          <div class="d-flex justify-content-around mb-1">
-                            <p class="text-muted mt-1 mb-0 small ms-xl-5">Pending</p>
-                            <p class="text-muted mt-1 mb-0 small ms-xl-5">Order Placed</p>
-                            <p class="text-muted mt-1 mb-0 small ms-xl-5">Shipped</p>
-                            <p class="text-muted mt-1 mb-0 small ms-xl-5">Delivered</p>
-                          </div>
-                        </div>
+                          
+                        
                       </div>
-                      
+                      <%}%>
                     </div>
                   </div>
                   

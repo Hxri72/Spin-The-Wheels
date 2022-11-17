@@ -149,3 +149,83 @@
     })
   }
 </script>
+<script>
+  function coupon(ordertotal){
+    let coupon = document.getElementById('couponcode').value
+    $.ajax({
+      url:'/applycoupon/'+coupon+'!'+ordertotal,
+      method:'post' ,
+      success : (response) => {
+        if(response.couponObj){
+        
+        coupon = response.couponObj
+        let userCoupon = document.getElementById('coupontotal1')
+
+        let order = document.getElementById('ordertotal').innerText
+        
+        let discount = (order*coupon.discount)/100 
+        
+        document.getElementById('discountid').innerText = discount
+
+        let orderDiscount = order-discount
+        document.getElementById('finaltotal').innerText = orderDiscount
+
+        Swal.fire({
+        title: "Coupon Applied!",
+        icon: "success",
+        showCancelButton: false,
+        })
+        }else if(response.couponErr){
+          let error = response.couponErr
+          console.log(error)
+          document.getElementById('couponErr').innerText = error
+        }else{
+          console.log(response.couponLimit)
+          coupon = response.couponObj
+
+          let order = document.getElementById('ordertotal').innerText
+          let discount = order - coupon.maxAmount
+
+          document.getElementById('discountid').innerText = discount
+
+          let orderDiscount = order-discount
+          document.getElementById('finaltotal').innerText = orderDiscount
+
+        }
+        
+
+      }
+    })
+  }
+</script>
+<script>
+  function cancelOrder(orderId){
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You are cancelling a Order!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, Cancel It!'
+  }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/cancelorder/'+orderId,
+          method: 'get',
+          success : (response) =>{
+            if(response.status){
+              Swal.fire({
+                icon : 'success',
+                title: 'Your Order is cancelled.',
+                showConfirmbutton:false
+            }).then(()=>{
+                location.reload()
+            })
+            }
+          }
+        })
+    }
+  })
+  }
+</script>

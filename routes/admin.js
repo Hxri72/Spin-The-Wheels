@@ -22,6 +22,12 @@ router.get('/admindestinations',AdminControllers.getAdminDestinations)
 
 router.get('/adminnews',AdminControllers.getAdminNews)
 
+router.get('/admincoupon',AdminControllers.getadminCoupon)
+
+router.get('/addcoupon',AdminControllers.getaddCoupon)
+
+router.get('/editcoupon/:id',AdminControllers.geteditCoupon)
+
 router.get('/addnews',AdminControllers.getAddNews)
 
 router.get('/adminOrders',AdminControllers.getAdminOrders)
@@ -68,6 +74,8 @@ router.get('/deletedestination/:id',AdminControllers.getdeleteDestination)
 
 router.get('/deletenews/:id',AdminControllers.getdeleteNews)
 
+router.get('/deletecoupon/:id',AdminControllers.getdeleteCoupon)
+
 router.get('/adminproduct',AdminControllers.getAdminProduct)
 
 router.get('/addproduct',AdminControllers.getaddProduct)
@@ -88,9 +96,13 @@ router.post('/editproduct/:id',storageImg.array("productImg",2),AdminControllers
 
 router.post('/editnews/:id',NewsImg.array("NewsImg",2),AdminControllers.postEditNews)
 
+router.post('/editcoupon/:id',AdminControllers.postEditCoupon)
+
 router.post('/addproduct',storageImg.array("productImg",2),AdminControllers.postAddProduct)
 
 router.post('/addCategory',AdminControllers.postAddCategory)
+
+router.post('/addcoupon',AdminControllers.postaddCoupon)
 
 router.post('/adminlogin',AdminControllers.PostAdminlogin)
 

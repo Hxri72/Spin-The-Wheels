@@ -23,19 +23,68 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="coupon-accordion">
+                    
                     <!-- ACCORDION START -->
                     <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
                     <div id="checkout_coupon" class="coupon-checkout-content">
                         <div class="coupon-info">
-                            <form action="#">
-                                <p class="checkout-coupon">
-                                    <input type="text" placeholder="Coupon code" />
-                                    <input type="submit" value="Apply Coupon" />
+                            <form>
+                                <p class="checkout-coupon mt-3" >
+                                    <input type="text" placeholder="Coupon code" id="couponcode" />
+                                    <input type="button" value="Apply Coupon" onclick="coupon('<%=total%>')" />
+                                    <p id="couponErr"></p>
                                 </p>
                             </form>
                         </div>
                     </div>
-                    <!-- ACCORDION END -->						
+                    
+                    <div class="d-flex justify-content-end mb-2 mt-2" >
+                        <!-- Modal -->
+                        
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Available Coupons</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    
+                                    <div class="modal-body">
+                                        
+                                        <div class="containercoupon">
+                                            <% coupon.forEach(function(result){%>
+                                            <div class="coupon-card">
+                    
+                                                <h3><%=result.Description%></h3>
+                                                <div class="coupon-row">
+                                                    <span id="cpnCode"><%=result.CouponCode%></span>
+                                                    <span id="cpnBtn">Copy Code</span>
+                                                </div>
+                                                <p>Valid Till: <%=result.ExpiryDate%></p>
+                                                <div class="circle1"></div>
+                                                <div class="circle2"></div>
+                                            </div>
+                                            <br>
+                                            <%})%>
+                                       </div>
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                               </div>
+                            </div>
+                            
+                        </div>
+                        
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-secondary">Available Coupons</a>
+                    </div>
+                    
+                    <!-- ACCORDION END -->
+                    
+                   
+                						
                 </div>
             </div>
         </div>
@@ -98,7 +147,7 @@
                                 </div>
                             </div>								
                         </div>
-                        <div class="different-address">
+                        <!-- <div class="different-address">
                             <div class="ship-different-title">
                                 <h3>
                                     <label>Ship to a different address?</label>
@@ -106,21 +155,6 @@
                                 </h3>
                             </div>
                             <div id="ship-box-info" class="row">
-                                <div class="col-md-12">
-                                    <div class="country-select">
-                                        <label>Country <span class="required">*</span></label>
-                                        <select>
-                                          <option value="volvo">bangladesh</option>
-                                          <option value="saab">Algeria</option>
-                                          <option value="mercedes">Afghanistan</option>
-                                          <option value="audi">Ghana</option>
-                                          <option value="audi2">Albania</option>
-                                          <option value="audi3">Bahrain</option>
-                                          <option value="audi4">Colombia</option>
-                                          <option value="audi5">Dominican Republic</option>
-                                        </select> 										
-                                    </div>
-                                </div>
                                 <div class="col-md-12">
                                     <div class="checkout-form-list">
                                         <label>First Name <span class="required">*</span></label>										
@@ -182,7 +216,7 @@
                                     <textarea id="checkout-mess" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery." ></textarea>
                                 </div>									
                             </div>
-                        </div>													
+                        </div>													 -->
                     </div>
             </div>	
             <div class="col-lg-6 col-md-12 col-12">
@@ -211,13 +245,20 @@
                             <tfoot>
                                 <tr class="cart-subtotal">
                                     <th>Cart Subtotal</th>
-                                    <td><span class="amount"><%=total%></</span></td>
+                                    <td id="ordertotal"><span class="amount"><%=total%></</span></td>
                                 </tr>
-                                <tr class="order-total">
-                                    <th>Order Total</th>
-                                    <td><strong><span class="amount"><%=total%></span></strong>
-                                    </td>
-                                </tr>								
+                                <div id="coupontotal">
+                                    <tr class="cart-subtotal">
+                                        <th>Discount</th>
+                                        <td id="discountid"><span class="amount">0</span></td>
+                                    </tr>
+                                    <tr class="order-total">
+                                        <th>Order Total</th>
+                                        <td id="finaltotal"><strong><span class="amount"><%=total%></span></strong>
+                                        </td>
+                                    </tr>	
+                                </div>
+                                							
                             </tfoot>
                         </table>
                     </div>
@@ -351,7 +392,18 @@
 <script src="/assets/js/plugins.js"></script>
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/preloader.js"></script>
+<script>
+     var cpnBtn = document.getElementById("cpnBtn");
+            var cpnCode = document.getElementById("cpnCode");
 
+            cpnBtn.onclick = function(){
+                navigator.clipboard.writeText(cpnCode.innerHTML);
+                cpnBtn.innerHTML ="COPIED";
+                setTimeout(function(){
+                    cpnBtn.innerHTML="COPY CODE";
+                }, 3000);
+            }
+</script>
 
 
 <%- include('../user/includes/user-footerend.ejs')%>  

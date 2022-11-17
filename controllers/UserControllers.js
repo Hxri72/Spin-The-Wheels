@@ -11,6 +11,7 @@ const orderModel = require('../models/order')
 const destinationModel = require('../models/destination')
 const categoryModel = require('../models/category')
 const newsModel = require('../models/news')
+const couponModel = require('../models/coupon')
 const Razorpay = require('razorpay');
 const crypto = require('crypto')
 
@@ -179,17 +180,26 @@ module.exports = {
         res.redirect('/cart')
     },
     getUserShop:async(req,res)=>{
+        let pageNum = req.query.page
+        if(pageNum===undefined){
+            pageNum = 1;
+        }
+        const perPage = 9
+        let docCount;
+
         let category = await  categoryModel.find({})
-        console.log(category)
-        productModel.find({},(err,result)=>{
-            if(err){
-                console.log(err)
-            }else{
-                let user = req.session.user
-                res.render('user/shop',{user,result,category})
-            }
+        let result = await productModel.find()
+        .countDocuments()
+        .then(documents =>{
+            docCount = documents;
+            return productModel.find().skip((pageNum-1) * perPage).limit(perPage)
         })
         
+        .then(result =>{
+            let user = req.session.user 
+            res.render('user/shop',{user,result,category,currentPage:pageNum,totalDocuments:docCount,pages:Math.ceil(docCount/perPage)}) 
+        })
+         
     },
     getUserDestinations:(req,res)=>{
         destinationModel.find({},(err,result)=>{
@@ -341,14 +351,12 @@ module.exports = {
     },
     getCheckOut :async(req,res) =>{
         if(loggedIn){
+        let coupon = await couponModel.find({})
         let total = req.params.id
         let userId = req.session.user._id
         let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
-        let user = req.session.user
-        
-        res.render('user/checkout',{user,total,viewcart})
-        
-        
+        let user = req.session.user       
+        res.render('user/checkout',{user,total,viewcart,coupon})               
         }else{
             res.redirect('/login')
         }
@@ -379,12 +387,26 @@ module.exports = {
     getMyOrders:async(req,res) => {
         if(loggedIn){
             let userId = req.session.user._id
-            let viewOrders = await orderModel.find({UserId:userId}).populate('Products.productId').exec()
-            console.log(viewOrders.length)
+            let vieworders = await orderModel.find({UserId:userId}).populate('Products.productId').exec()
+            let viewOrders = vieworders.reverse()
             let user = req.session.user
             res.render('user/myorders',{user,viewOrders})
             
             
+        }else{
+            res.redirect('/login')
+        }
+    },
+    getCancelOrder:async(req,res)=>{
+        if(loggedIn){
+            let orderId = req.params.id
+            await orderModel.updateOne({_id:orderId},{
+            $set:{
+                paymentStatus : "Cancelled"
+            }
+        })
+        res.json({status:true})
+
         }else{
             res.redirect('/login')
         }
@@ -400,6 +422,90 @@ module.exports = {
                 res.render('user/shop',{user,result,category})
             }
         })
+    },
+    postapplyCoupon:(req,res)=>{
+        str = req.params.id
+        let array = str.split("!");
+        let couponCode = array[0]
+        let orderTotal= array[1]
+
+        let userId = req.session.user._id
+        couponModel.find({CouponCode:couponCode},(err,data)=>{
+            if(data.length!==0){
+                userModel.findOne({_id:userId},async(err,user)=>{                  
+                    if(user){
+                       let itemIndex = user.coupons.findIndex(p =>  p.couponId == data[0]._id)
+                       if(itemIndex===-1){
+                        let date = new Date().toJSON().slice(0,10)
+                        if(date <= data[0].ExpiryDate){
+                            let discount = (orderTotal*data[0].Percentage)/100
+                            console.log(discount)
+                            if(Number(discount) <= Number(data[0].Maxamount)){
+                                if(data[0].Minamount <= orderTotal){
+                                    await userModel.updateOne({_id:userId},{
+                                        $push:{
+                                            coupons : {
+                                                couponId : data[0]._id ,
+                                                couponName : data[0].CouponName ,
+                                                couponCode : data[0].CouponCode ,
+                                                description : data[0].Description ,
+                                                percentage : data[0].Percentage ,
+                                                minAmount : data[0].Minamount ,
+                                                maxAmount : data[0].Maxamount ,
+                                                expiryDate : data[0].ExpiryDate
+                                            }
+                                        }
+                                    })
+                                    let couponObj = {
+                                        discount : data[0].Percentage,
+                                        couponId : data[0]._id
+                                    }
+                                    req.session.coupon = couponObj
+                                    res.json({couponObj})
+                                }else{
+                                    req.session.couponErr = "This coupon is not Applicable to this amount!"
+                                    let couponErr = req.session.couponErr
+                                    res.json({couponErr})
+                                }
+                            }else{
+                                await userModel.updateOne({_id:userId},{
+                                    $push:{
+                                        coupons : {
+                                            couponId : data[0]._id ,
+                                            couponName : data[0].CouponName ,
+                                            couponCode : data[0].CouponCode ,
+                                            description : data[0].Description ,
+                                            percentage : data[0].Percentage ,
+                                            minAmount : data[0].Minamount ,
+                                            maxAmount : data[0].Maxamount ,
+                                            expiryDate : data[0].ExpiryDate
+                                        }
+                                    }
+                                })
+                                let couponLimit = {
+                                    maxAmount : data[0].Maxamount,
+                                    discount : data[0].Percentage,
+                                    couponId : data[0]._id
+                                }
+                                req.session.coupon = couponLimit
+                                res.json({couponLimit})
+                            }
+                        }else{
+                            req.session.couponErr = "This Coupon is Expired!"
+                            let couponErr = req.session.couponErr
+                            res.json({couponErr})
+                        }
+                       }else{
+                        req.session.couponErr = "This Coupon is already used!"
+                        let couponErr = req.session.couponErr
+                        res.json({couponErr})
+                       }
+                    }
+                })
+            }
+        })
+        
+
     },
     postProductSearch:async(req,res)=>{
         console.log(req.body)
@@ -461,9 +567,10 @@ module.exports = {
         console.log(user)
     },
     PostUserCheckout:async(req,res)=>{
-        console.log(req.body)
-        console.log(req.params.id)
         let total =  req.params.id
+        let coupon = req.session.coupon
+        let discount = (total*coupon.discount)/100
+        let finalTotal = total - discount
         let text1 = req.body.firstname
         let text2 = req.body.lastname
         let Fullname = text1.concat(text2)
@@ -480,13 +587,16 @@ module.exports = {
             orderProducts.productImg = cartProducts[i].productImg
             productArray.push(orderProducts)
         }
+
+
+
         if(req.body.payment==='COD'){
             orderModel.findOne({UserId:userId},async(err,data)=>{
                 if(data===null){
                     const order = new orderModel ({
                         UserId : userId,
                         paymentMode : req.body.payment,
-                        totalPrice : total,
+                        totalPrice : finalTotal,
                         paymentStatus : "Pending",
                         Date : new Date(),
                         Products : productArray, 
@@ -506,7 +616,7 @@ module.exports = {
                     const order = new orderModel ({
                         UserId : userId,
                         paymentMode : req.body.payment,
-                        totalPrice : total,
+                        totalPrice : finalTotal,
                         paymentStatus : "Pending",
                         Date : new Date(),
                         Products : productArray,
@@ -527,12 +637,11 @@ module.exports = {
             
             let user = req.session.user
             res.json({codSuccess:true})
-            // res.render('user/placedOrder',{user})
         }else{
             const order = new orderModel ({
                 UserId : userId,
                 paymentMode : req.body.payment,
-                totalPrice : total,
+                totalPrice : finalTotal,
                 paymentStatus : "Pending",
                 Date : new Date(),
                 Products : productArray,
@@ -556,7 +665,7 @@ module.exports = {
             });
 
             var options = {
-                amount: total*100,  // amount in the smallest currency unit
+                amount: finalTotal*100,  // amount in the smallest currency unit
                 currency: "INR",
                 receipt: ""+req.session.orderId
               };

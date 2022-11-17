@@ -48,7 +48,11 @@ router.get('/placedOrder',UserControllers.getPlacedOrder)
 
 router.get('/MyOrders',UserControllers.getMyOrders)
 
+router.get('/cancelorder/:id',UserControllers.getCancelOrder)
+
 router.get('/categoryproduct/:id',UserControllers.getcategoryProduct)
+
+router.post('/applycoupon/:id',UserControllers.postapplyCoupon)
 
 router.post('/search',UserControllers.postProductSearch)
 

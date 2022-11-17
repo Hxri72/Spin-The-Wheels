@@ -1327,7 +1327,7 @@
     p.checkout-coupon input[type="text"] {
         width: 135px;
     }
-    p.checkout-coupon input[type="submit"] {
+    p.checkout-coupon input[type="button"] {
         padding: 5px 15px;
     }
     .your-order {

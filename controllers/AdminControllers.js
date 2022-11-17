@@ -8,6 +8,7 @@ const bannerModel = require('../models/banner')
 const destinationModel = require('../models/destination')
 const orderModel = require('../models/order')
 const newsModel = require('../models/news')
+const couponModel = require('../models/coupon')
 const bcrypt = require('bcrypt')
 const destination = require('../models/destination')
 
@@ -99,8 +100,29 @@ module.exports = {
             }else{
                 res.render('admin/Admin-News',{result})
             }
-    })
+        })
+    },
+    getaddCoupon : (req,res) =>{
+        res.render('admin/Add-Coupon')
+    }, 
+    getadminCoupon : (req,res) => {
+        couponModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Coupon',{result})
+            }
+        })
         
+    },
+    geteditCoupon : (req,res) => {
+        couponModel.find({_id:req.params.id},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Edit-Coupon',{result})
+            }
+        })
     },
     getAddNews : (req,res)=>{
         res.render('admin/Add-News')
@@ -242,6 +264,11 @@ module.exports = {
     getdeleteNews:async(req,res)=>{
         let newsId = req.params.id
         await newsModel.deleteOne({_id:newsId})
+        res.json({status:true})
+    },
+    getdeleteCoupon:async(req,res)=>{
+        let couponId = req.params.id
+        await couponModel.deleteOne({_id:couponId})
         res.json({status:true})
     },
     getAdminlogout:(req,res)=>{
@@ -461,6 +488,26 @@ module.exports = {
             
         })
     },
+    postEditCoupon : (req,res) => {
+        couponModel.find({_id:req.params.id},async(err,data)=>{
+            if(data!==0){
+                await couponModel.updateOne({_id:req.params.id},{
+                    $set:{
+                    CouponName:req.body.CouponName,
+                    CouponCode:req.body.CouponCode,
+                    Percentage:req.body.Percentage,
+                    Minamount:req.body.Minamount,
+                    Maxamount:req.body.Maxamount,
+                    Description:req.body.Description,
+                    ExpiryDate:req.body.Date
+                    }
+                })
+                res.redirect('/admin/admincoupon')
+            }else{
+                console.log(err)
+            }
+        })
+    },
     postAddCategory:(req,res)=>{
         categoryModel.find({category:req.body.category},(err,data)=>{
             if(data.length===0){
@@ -480,6 +527,31 @@ module.exports = {
             }
         }
         )
+    },
+    postaddCoupon : (req,res) => {
+        couponModel.find({CouponCode:req.body.CouponCode},(err,data)=>{
+            if(data.length===0){
+                const coupon = new couponModel ({
+                    CouponName:req.body.CouponName,
+                    CouponCode:req.body.CouponCode,
+                    Percentage:req.body.Percentage,
+                    Minamount:req.body.Minamount,
+                    Maxamount:req.body.Maxamount,
+                    Description:req.body.Description,
+                    ExpiryDate:req.body.Date
+                })
+                coupon.save()
+                .then(result=>{
+                    res.redirect('/admin/admincoupon')
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
+            }else{
+                req.session.couponErr = "Coupon already added"
+                res.redirect('/admin/admincoupon')
+            }
+        })
     },
     PostAdminlogin :async (req,res) => {
         let Admin = await adminModel.findOne({Username:req.body.Username}).lean()
