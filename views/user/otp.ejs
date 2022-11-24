@@ -1,14 +1,15 @@
 <%- include('../user/includes/layout.ejs') %>
-
+ 
 
 <section>
     <div class="container-fluid">
-        <div class="row" >
-            <div class="col-md-12 col-12 col-lg-12" >
-                <div class="otplayout">
+        <div class="row justify-content-center mt-3" >
+            <div class="col-lg-4 col-12 col-md-8 mt-5">
+                <!-- <div class="otplayout"> -->
                     <form action="/postotp" method="post">
                         <div class="d-flex justify-content-center align-items-center container">
-                            <div class="card py-5 px-3">
+                            <div class="otpcard">
+                            <div class="card py-5 px-3 mt-5">
                                 <h5 class="m-0">Mobile phone verification</h5><span class="mobile-text">Enter the code we just send on your
                                     mobile phone </span>
                                 <div class="d-flex flex-row mt-5"><input name="num1" type="number" class="form-control" size="1" maxlength="1" autofocus=""><input type="number"
@@ -18,9 +19,10 @@
                                 <div class="text-center mt-3"><span class="d-block mobile-text">Don't receive the code?</span><a
                                         class="font-weight-bold text-danger cursor" href="/resend">Resend</a></div>
                             </div>
+                            </div>
                         </div>
                     </form>
-                </div>
+                <!-- </div> -->
 
             </div>
 

@@ -10,6 +10,10 @@ router.get('/',AdminControllers.getAdminlogin)
 
 router.get('/adminhome',AdminControllers.getAdminHome)
 
+router.get('/getdashboarddetails',AdminControllers.getdashboardDetails)
+
+router.get('/dashboardBar',AdminControllers.getdashboardBar)
+
 router.get('/adminuser',AdminControllers.getAllUsers)
 
 router.get('/admincategory',AdminControllers.getAllCategory)
@@ -23,6 +27,8 @@ router.get('/admindestinations',AdminControllers.getAdminDestinations)
 router.get('/adminnews',AdminControllers.getAdminNews)
 
 router.get('/admincoupon',AdminControllers.getadminCoupon)
+
+router.get('/adminsales',AdminControllers.getadminSales)
 
 router.get('/addcoupon',AdminControllers.getaddCoupon)
 

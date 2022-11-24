@@ -172,6 +172,7 @@
 
         Swal.fire({
         title: "Coupon Applied!",
+        text:"You get "+discount+" off!",
         icon: "success",
         showCancelButton: false,
         })
@@ -180,19 +181,23 @@
           console.log(error)
           document.getElementById('couponErr').innerText = error
         }else{
-          console.log(response.couponLimit)
-          coupon = response.couponObj
+          let coupon = response.couponLimit
 
           let order = document.getElementById('ordertotal').innerText
-          let discount = order - coupon.maxAmount
+          let discount = coupon.maxAmount
 
           document.getElementById('discountid').innerText = discount
 
           let orderDiscount = order-discount
           document.getElementById('finaltotal').innerText = orderDiscount
 
-        }
-        
+        Swal.fire({
+        title: "Coupon Applied!",
+        text:"You get "+discount+" off!",
+        icon: "success",
+        showCancelButton: false,
+        })
+      }
 
       }
     })

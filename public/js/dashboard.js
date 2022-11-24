@@ -12,7 +12,7 @@
             {
               type: 'line',
               fill: false,
-              data: [100, 230, 130, 140, 270, 140],
+              data: [1000, 230, 130, 140, 270, 140],
               borderColor: '#ff4c5b'
             },
             {
@@ -22,7 +22,7 @@
             },
             {
               label: 'Online Sales',
-              data: [130, 190, 250, 250, 190, 260],
+              data: [1300, 190, 250, 250, 190, 260],
               backgroundColor: '#1cbccd'
             }
           ]
@@ -50,8 +50,8 @@
               ticks: {
                 display: true,
                 min: 0,
-                max: 400,
-                stepSize: 100,
+                max: 2000,
+                stepSize: 500,
                 fontColor: "#b1b0b0",
                 fontSize: 10,
                 padding: 10

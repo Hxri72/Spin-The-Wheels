@@ -55,8 +55,9 @@ module.exports = {
         
     },
     getUserSignup:(req,res)=>{
-
+        Err = req.session.Err
         res.render('user/signup',{Err})
+        Err = null;
     },
     getUserProfile:(req,res)=>{
         if(loggedIn){
@@ -567,9 +568,17 @@ module.exports = {
         console.log(user)
     },
     PostUserCheckout:async(req,res)=>{
+        let discount;
         let total =  req.params.id
         let coupon = req.session.coupon
-        let discount = (total*coupon.discount)/100
+        console.log(coupon)
+        if(coupon!== undefined){
+            discount = (total*coupon.discount)/100
+
+        }else{
+            discount = 0;
+        } 
+        
         let finalTotal = total - discount
         let text1 = req.body.firstname
         let text2 = req.body.lastname
@@ -598,7 +607,7 @@ module.exports = {
                         paymentMode : req.body.payment,
                         totalPrice : finalTotal,
                         paymentStatus : "Pending",
-                        Date : new Date(),
+                        Date : new Date().toJSON().slice(0,10),
                         Products : productArray, 
                         Address : {
                             Fullname : Fullname,
@@ -618,7 +627,7 @@ module.exports = {
                         paymentMode : req.body.payment,
                         totalPrice : finalTotal,
                         paymentStatus : "Pending",
-                        Date : new Date(),
+                        Date : new Date().toJSON().slice(0,10),
                         Products : productArray,
                         Address : {
                             Fullname : Fullname,
@@ -643,7 +652,7 @@ module.exports = {
                 paymentMode : req.body.payment,
                 totalPrice : finalTotal,
                 paymentStatus : "Pending",
-                Date : new Date(),
+                Date : new Date().toJSON().slice(0,10),
                 Products : productArray,
                 Address : {
                     Fullname : Fullname,
@@ -738,7 +747,7 @@ module.exports = {
                     res.redirect('/otp')
                 }else{
                     console.log('err');
-                    Err = "The password is not matched"
+                    req.session.Err = "The password is not matched"
                     res.redirect('/signup')
                 }
                 

@@ -18854,7 +18854,7 @@ code {
 
 /* Utilities */
 .grid-margin {
-  margin-bottom: 1.875rem;
+  margin-bottom: -0.125rem;
 }
 
 @media (min-width: 576px) {

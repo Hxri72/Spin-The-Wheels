@@ -29,13 +29,118 @@ module.exports = {
         }
         
     },
-    getAdminHome:(req,res) => {
-        if(loggedIn){
-            res.render('admin/Admin-home')  
-        }else{
-            res.render('/admin')
+    getdashboardDetails:async(req,res)=>{
+        let result1 = {
+            cancelledOrders : "0",
+            completedOrders : "0",
+            pendingOrders : "0"
         }
+        const cancelledOrders = await orderModel.aggregate(
+            [
+
+                {$match : {"paymentStatus" : 'Cancelled'}  },
+
+                {$count : 'totalcount' }
+            ]
+        )
+
+        const completedOrders = await orderModel.aggregate(
+            [
+
+                {$match : {"paymentStatus" : "Delivered"}},
+
+                {$count : 'totalcount' }
+            ]
+        )
+
+        const pendingOrders = await orderModel.aggregate(
+            [
+
+                {$match : {$or :[
+                {"paymentStatus" : "Pending"},
+                {"paymentStatus" : "Placed"},
+                {"paymentStatus" : "Shipped"}]}},
+
+                {$count : 'totalcount' }
+            ]
+        )
+        if(cancelledOrders.length===0){
+            result1.cancelledOrders = [{totalcount : 0}]
+        }else{
+            result1.cancelledOrders = cancelledOrders
+        }
+        if(completedOrders.length===0){
+            result1.completedOrders = [{totalcount : 0}]
+        }else{
+            result1.completedOrders = completedOrders
+        }
+        if(pendingOrders.length===0){
+            result1.pendingOrders = [{totalcount : 0}]
+        }else{
+            result1.pendingOrders = pendingOrders
+        }
+        res.json(result1)
+    },
+    getdashboardBar:async(req,res) => {
+        let result = {
+            users : '0',
+            Profit : '0',
+            totalSales : '0'
+        }
+
+        const users = await userModel.aggregate(
+            [
+                {$count : 'totalcount'}
+            ]
         
+        )
+
+        const profit = await orderModel.aggregate(
+            [
+                {$match : {$or :[
+                    {"paymentStatus" : "Pending"},
+                    {"paymentStatus" : "Placed"},
+                    {"paymentStatus" : "Shipped"},
+                    {"paymentStatus" : "Delivered"}]}},
+                
+            ]
+        )
+
+        const dates = await orderModel.aggregate(
+            [
+                {$group : 
+                {_id : "$Date",
+                totalPrice : {
+                    "$sum" : "$totalPrice"
+            }
+            },
+                 
+        },
+
+                {$sort : {_id : -1}}
+            ]
+        ).limit(4)
+        dates.reverse()
+
+        console.log(dates)
+        
+        let   totalSales = 0
+
+        for(let i=0;i<profit.length;i++){
+            totalSales = profit[i].totalPrice + totalSales
+        }
+
+        let Profit = (totalSales*12)/100
+
+        result.users = users
+        result.totalSales = totalSales
+        result.Profit = Profit
+        result.dates = dates
+
+        res.json(result)
+    },
+    getAdminHome:async(req,res) => {
+        res.render('admin/Admin-home')
     },
     getAdminUser:(req,res)=>{
         res.render('admin/Admin-User')
@@ -115,8 +220,19 @@ module.exports = {
         })
         
     },
+    getadminSales : (req,res) => {
+        orderModel.find({},(err,result)=>{
+            if(err){
+                console.log(err)
+            }else{
+                res.render('admin/Admin-Sales',{result})
+            }
+        })
+        
+    },
     geteditCoupon : (req,res) => {
         couponModel.find({_id:req.params.id},(err,result)=>{
+
             if(err){
                 console.log(err)
             }else{

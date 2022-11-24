@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Spica Admin</title>
+  <title>SPIN THE WHEELS</title>
   <!-- base:css -->
   <link rel="stylesheet" href="../../vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
@@ -14,7 +14,9 @@
   <link rel="stylesheet" href="../../css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="../../images/favicon.png" />
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet"  href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+  <link rel="stylesheet"  href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css">
+  
 </head>
 
 <body>
@@ -157,43 +159,33 @@
             <div class="col-lg-6 grid-margin stretch-card " style="max-width:100%;">
               <div class="userdiv" style="width:100%;">
                 
-                <a class="btn btn-primary" type="submit" href="/admin/addcoupon">Add Coupon</a>
-                
-                <table class="table mt-5">
+                <table id="example" class="display nowrap mt-5" style="width:100%" class="table" >
                   <thead>
-                      <tr class="text-center">
-                          <th>No</th>
-                          <th >Coupon Name</th>
-                          <th >Coupon Code</th>
-                          <th >Percentage</th>
-                          <th >Min amount</th>
-                          <th >Max amount</th>
-                          <th >Expiry date</th>
-                          <th></th>
-                          <th></th>
-                      </tr>
-                      
+                    <tr>
+                        <th>No</th>
+                        <th>OrderId</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Total Price</th>
+                        <th>Payment Method</th>
+                        <th>Status</th>
+                    </tr>
                   </thead>
+                  
                   
                   <tbody>
                     <% result.forEach(function(result,index){%>
-                      <tr class="text-center">
-                        <th><%=index+1%></th>
-                        <td><%=result.CouponName%></td>
-                        <td><%=result.CouponCode%></td>
-                        <td><%=result.Percentage%></td>
-                        <td><%=result.Minamount%></td>
-                        <td><%=result.Maxamount%></td>
-                        <td><%=result.ExpiryDate%></td>
-                        <td>
-                          <a class="btn btn-primary" href="/admin/editcoupon/<%=result.id%>">Edit</a>
-                        </td>
-                        <td>
-                          <a class="btn btn-primary" onclick="deletecoupon('<%=result.id%>')">Delete</a>
-                        </td>
-                      </tr>  
-                      <%})%>
-                                        
+                      <tr>
+                        <td><%=index +1%></td>
+                        <td><%=result._id%></td>
+                        <td><%=result.Date%></td>
+                        <td><%=result.Address[0].Fullname%></td>
+                        <td><%=result.totalPrice%></td>
+                        <td><%=result.paymentMode%></td>
+                        <td><%=result.paymentStatus%></td>
+                      </tr>
+                    <%})%>
+                                            
                   </tbody>
                   
               </table>
@@ -239,10 +231,21 @@
   <script src="../../js/chart.js"></script>
   <!-- End custom js for this page-->
   <script>
-    function deletecoupon(couponId){
+    $(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
+  </script>
+  
+  <script>
+    function deletecategory(category){
     Swal.fire({
     title: 'Are you sure?',
-    text: "You are deleting a coupon!",
+    text: "You are deleting a category!",
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -251,13 +254,21 @@
     }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
-            url: '/admin/deletecoupon/'+couponId,
+            url: '/admin/deletecategory/'+category,
             method: 'get',
             success : (response) =>{
               if(response.status){
                 Swal.fire({
                   icon : 'success',
-                  title: 'Your Coupon is Deleted.',
+                  title: 'Your Category is Deleted.',
+                  showConfirmbutton:false
+              }).then(()=>{
+                  location.reload()
+              })
+              }else{
+                Swal.fire({
+                  icon : 'error',
+                  title: 'Category contains products.',
                   showConfirmbutton:false
               }).then(()=>{
                   location.reload()
@@ -271,6 +282,15 @@
     
 
   </script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
 </body>
 
 </html>
