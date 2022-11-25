@@ -13,12 +13,12 @@
                             <h3>Drop Your Suggestions</h3>
                         </div>
                         <div id="mc_embed_signup" class="subscribe-form">
-                            <form action="https://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+                            <form action="" id="submit-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
                                 <div id="mc_embed_signup_scroll" class="mc-form">
-                                    <input type="email" value="" name="EMAIL" class="email" placeholder="Enter your Suggestions...." required>
+                                    <input type="text" value="" name="Message" placeholder="Enter your Suggestions...." required>
                                     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                                    <div class="mc-news" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div>
-                                    <div class="clear" ><input  type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+                                    <!-- <div class="mc-news" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div> -->
+                                    <div class="clear" ><input  type="submit"   class="button"></div>
                                 </div>
                             </form>
                         </div>
@@ -160,4 +160,30 @@
     }
     
   </script>
+  <script>
+    $("#submit-form").submit((e)=>{
+        e.preventDefault()
+        $.ajax({
+            url:"https://script.google.com/macros/s/AKfycbx2hHU9sk00wsnxeGq7JXKAXvM_ECcqwhnccOIyE01hqAA3KPIb-kgggZyDA1w5ZRCopw/exec",
+            data:$("#submit-form").serialize(),
+            method:"post",
+            success:function (response){
+                Swal.fire({
+                title: "Form Submitted Successfully",
+                icon: "success",
+                showCancelButton: false,
+                }).then(function(){
+                    location.reload()
+                }
+                )
+                
+                //window.location.href="https://google.com"
+            },
+            error:function (err){
+                alert("Something Error")
+
+            }
+        })
+    })
+</script>
 <%- include('../../user/includes/user-footerend.ejs')%>  
