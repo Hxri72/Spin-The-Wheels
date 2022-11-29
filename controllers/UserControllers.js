@@ -126,8 +126,9 @@ module.exports = {
     },
     getUserWishlist : async(req,res) =>{
         if(loggedIn){
-            let userId = req.session.user._id
+        let userId = req.session.user._id
         let viewWishlist = await wishlistModel.findOne({UserId:userId}).populate('products.productId').exec()
+        console.log(viewWishlist)
         wishlistModel.find({},(err,result)=>{
             if(err){
                 console.log(err)
@@ -185,7 +186,7 @@ module.exports = {
                 }
             }        
         })
-        res.redirect('/cart')
+        res.json({status:true})
     },
     getUserShop:async(req,res)=>{
         let pageNum = req.query.page
@@ -749,7 +750,6 @@ module.exports = {
 
         let userData = req.session.user
         userId = userData._id
-       console.log(req.body);
        let details = req.body
        
        let hmac = crypto.createHmac('sha256','asHbACGyR2opOxqcRomRwPVE')
@@ -757,27 +757,27 @@ module.exports = {
        hmac = hmac.digest('hex')
        if(hmac==details.payment.razorpay_signature){
         orderId = req.session.orderId
-        console.log(orderId);
         await orderModel.findByIdAndUpdate(orderId,{paymentStatus:"Pending"})
         await cartModel.findOneAndDelete({ UserId: userId })
-        console.log('payment success')
         res.json({status:true})
        }else{    
-        console.log("payment failed");
         res.json({status:'false'})
        }
 
     },
     PostUserOtp:(req,res)=>{
         const joinedbody=req.body.num1.join("")
-        if(req.session.otpgenerator===joinedbody){
+        otpverification.otpverify(req.body.Phone,joinedbody) 
+        .then(({status})=>{
             const user = userModel.create(req.session.otp)
             req.session.user = req.session.otp
             req.session.otp = null,
             req.session.otpgenerator = null,
             loggedIn = true
             res.redirect('/')
-        }
+        })
+            
+        
     },
     PostUsersignup:(req,res)=>{ 
         userModel.find({Email:req.body.Email},async(err,data)=>{
@@ -796,16 +796,16 @@ module.exports = {
                     })
 
                     req.session.otp = user
-                    req.session.otpgenerator = otpverification.otpgenerator();
-                    console.log(req.session.otpgenerator)
+                    // req.session.otpgenerator = otpverification.otpgenerator();
+                    // console.log(req.session.otpgenerator)
                     // message sending
-                    // otpverification.otpsender(req.session.otpgenerator)
-                    // .then(()=>{
-                    //     res.redirect('/otp')
-                    // })
+                    otpverification.otpsender(req.body.Phone)
+                    .then(()=>{
+                        res.redirect('/otp')
+                    })
 
 
-                    res.redirect('/otp')
+                    // res.redirect('/otp')
                 }else{
                     console.log('err');
                     req.session.Err = "The password is not matched"

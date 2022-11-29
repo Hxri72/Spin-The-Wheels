@@ -9,40 +9,67 @@
         </div>
     </div>
 </div>
-<div class="product-cart-area fluid-padding-3 pt-120 pb-130">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="table-content table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th class="product-name">products</th>
-                                <th class="product-price">products name</th>
-                                <th class="product-name">price</th>
-                                <th class="product-subtotal">delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% viewWishlist.products.forEach(function(result){%>
-                                <tr>
-                                    <%console.log(result)%>
-                                    <th style="width:17%;"><img src="/images/<%=result.productImg[0]%>" style="width:50%;"></th>
-                                    <th><a href="/productdetails/<%=result.productId%>"><%=result.productname%></a></th>
-                                    <th><%=result.price%></th>
-                                    <td style="padding: 0px 23px 0;">
-                                        <a href="/deleteproduct/<%=result.productId%>">
-                                         <i class="bi bi-trash3"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            <%})%>
-                        </tbody>
-                    </table>
+<%if(viewWishlist===null){%>
+    <div class="row">
+				 
+        <div class="col-md-12">
+        
+                <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body cart">
+                    <div class="col-sm-12 empty-cart-cls text-center">
+                        <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                        <h3><strong>Your Wishlist is Empty</strong></h3>
+                        <h4>Add something to make me happy :)</h4>
+                        <a href="/shop" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                        
+                    
+                    </div>
+            </div>
+    </div>
+            
+        
+        </div>
+     
+     </div>
+    <%}else{%>
+        <div class="product-cart-area fluid-padding-3 pt-120 pb-130">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-content table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="product-name">products</th>
+                                        <th class="product-price">products name</th>
+                                        <th class="product-name">price</th>
+                                        <th class="product-subtotal">delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% viewWishlist.products.forEach(function(result){%>
+                                        <tr>
+                                            <%console.log(result)%>
+                                            <th style="width:17%;"><img src="/images/<%=result.productImg[0]%>" style="width:50%;"></th>
+                                            <th><a href="/productdetails/<%=result.productId%>"><%=result.productname%></a></th>
+                                            <th><%=result.price%></th>
+                                            <td style="padding: 0px 23px 0;">
+                                                <a href="/deleteproduct/<%=result.productId%>">
+                                                 <i class="bi bi-trash3"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <%})%>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    <%}%>
+
 
 <%- include('../user/includes/User-footer.ejs') %> 
