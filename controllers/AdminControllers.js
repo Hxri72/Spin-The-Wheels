@@ -14,20 +14,13 @@ const destination = require('../models/destination')
 
 
 
-let loggedIn ;
 let adminloginErr;
 let categoryErr;
 
 module.exports = {
     getAdminlogin:(req,res)=>{
-        if(loggedIn){
-            let admin = req.session.admin
-            res.render('admin/Admin-home',{admin})
-        }else{
-            res.render('admin/Admin-login',{adminloginErr})
-            adminloginErr = null
-        }
-        
+        let admin = req.session.admin
+        res.render('admin/Admin-login',{adminloginErr})
     },
     getdashboardDetails:async(req,res)=>{
         let result1 = {
@@ -121,8 +114,6 @@ module.exports = {
             ]
         ).limit(4)
         dates.reverse()
-
-        console.log(dates)
         
         let   totalSales = 0
 
@@ -386,11 +377,6 @@ module.exports = {
         let couponId = req.params.id
         await couponModel.deleteOne({_id:couponId})
         res.json({status:true})
-    },
-    getAdminlogout:(req,res)=>{
-        req.session.destroy();
-        loggedIn = false;
-        res.redirect('/admin')
     },
     getUserBanner:(req,res)=>{
         bannerModel.find({},(err,result)=>{
@@ -673,10 +659,11 @@ module.exports = {
         let Admin = await adminModel.findOne({Username:req.body.Username}).lean()
         if(Admin){
             if(Admin.Password===req.body.Password){
-                loggedIn = true
+                req.session.adminloggedIn = true
                 req.session.admin = Admin
                 res.redirect('/admin/adminhome')
             }else{
+                
                 adminloginErr = "Invalid Email or Password"
                 res.redirect('/admin')
             }           

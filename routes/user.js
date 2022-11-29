@@ -52,6 +52,12 @@ router.get('/cancelorder/:id',UserControllers.getCancelOrder)
 
 router.get('/categoryproduct/:id',UserControllers.getcategoryProduct)
 
+router.get('/error',UserControllers.getuserError)
+
+router.get('/deleteaddress/:id',UserControllers.getdeleteAddress)
+
+router.post('/addaddress',UserControllers.postaddAddress)
+
 router.post('/applycoupon/:id',UserControllers.postapplyCoupon)
 
 router.post('/search',UserControllers.postProductSearch)
@@ -73,6 +79,7 @@ router.post('/postotp',UserControllers.PostUserOtp)
 router.post('/signup',UserControllers.PostUsersignup)
 
 router.post('/login',UserControllers.PostUserlogin)
+
 
 
 module.exports = router;

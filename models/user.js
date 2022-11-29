@@ -38,6 +38,29 @@ let couponSchema = new Schema({
 
 })
 
+let addressSchema = new Schema({
+    Address : {
+        type:String,
+        required:true
+    },
+    District:{
+        type:String,
+        required:true
+    },
+    Phone:{
+        type:String,
+        required:true
+    },
+    State:{
+        type:String,
+        required:true
+    },
+    Postcode:{
+        type:String,
+        required:true
+    }
+})
+
 let userSchema = new Schema({
     Fullname:{
         type : String,
@@ -51,10 +74,6 @@ let userSchema = new Schema({
         type : String,
         required : true
     },
-    Address:{
-        type:String,
-        required: false
-    },
     Password:{
         type : String,
         required : true
@@ -63,7 +82,9 @@ let userSchema = new Schema({
         type:String,
         required:true
     },
-    coupons: [couponSchema]
+    coupons: [couponSchema],
+
+    Address : [addressSchema]
 
 })
 

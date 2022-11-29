@@ -234,3 +234,43 @@
   })
   }
 </script>
+
+<script>
+  function addAddress(){
+    console.log('address')
+    $.ajax({
+      url:'/addaddress',
+      method : 'get'
+    })
+  }
+</script>
+
+<script>
+  function deleteAddress(addressId){
+    $.ajax({
+      url:'/deleteaddress/'+addressId,
+      method: 'get',
+      success : (response) => {
+        if(response.status){
+          location.reload()
+        }
+      }
+    })
+  }
+</script>
+
+<script>
+  function useAddress(index){
+    let fullname = document.getElementById('fullname'+index).textContent
+    let firstname = fullname.slice(0,4)
+    let lastname = fullname.slice(4,10)
+    document.getElementById('firstname').value = firstname
+    document.getElementById('lastname').value = lastname
+    document.getElementById('address').value = document.getElementById('address'+index).textContent
+    document.getElementById('district').value = document.getElementById('district'+index).textContent
+    document.getElementById('state').value = document.getElementById('state'+index).textContent
+    document.getElementById('phone').value = document.getElementById('phone'+index).textContent
+    document.getElementById('post').value = document.getElementById('postcode'+index).textContent
+
+  }
+</script>

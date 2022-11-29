@@ -18,7 +18,7 @@
         </div>
     </div>
 
-<div class="checkout-area pt-130 pb-100">
+<div class="checkout-area pt-50 pb-100">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -88,6 +88,24 @@
                 </div>
             </div>
         </div>
+        
+            <%for(let i=0;i< userAddress.Address.length; i++){%>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                      <h5 class="card-title">Saved Address</h5>
+                      <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
+                      <p class="card-subtitle" id="fullname<%=i%>"><%=userAddress.Fullname%></p>
+                      <p class="card-subtitle" id="address<%=i%>"><%=userAddress.Address[0].Address%></p>
+                      <p class="card-subtitle" id="district<%=i%>"><%=userAddress.Address[0].District%></p>
+                      <p class="card-subtitle" id="state<%=i%>"><%=userAddress.Address[0].State%></p>
+                      <p class="card-subtitle" id="phone<%=i%>"><%=userAddress.Address[0].Phone%></p>
+                      <p class="card-subtitle" id="postcode<%=i%>"><%=userAddress.Address[0].Postcode%></p>
+                      
+                      <button onclick="useAddress('<%=i%>')" type="button" class="card-link btn btn-secondary">Use</button>
+                      
+                    </div>
+                </div>    
+            <%}%>
         <form id="checkout">
         <div class="row">
             <div class="col-lg-6 col-md-12 col-12">
@@ -99,44 +117,44 @@
                             <div class="col-md-6">
                                 <div class="checkout-form-list">
                                     <label>First Name <span class="required">*</span></label>										
-                                    <input type="text" name="firstname" placeholder="" />
+                                    <input type="text" id="firstname" name="firstname" placeholder="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="checkout-form-list">
                                     <label>Last Name <span class="required">*</span></label>										
-                                    <input type="text" name="lastname" placeholder="" />
+                                    <input type="text" id="lastname" name="lastname" placeholder="" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Address <span class="required">*</span></label>
-                                    <input type="text" name="address" placeholder="Street address" />
+                                    <input type="text" id="address" name="address" placeholder="Street address" />
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>District<span class="required">*</span></label>
-                                    <input type="text" name="district"/>
+                                    <input type="text" id="district" name="district"/>
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="checkout-form-list">
                                     <label>Phone<span class="required">*</span></label>
-                                    <input type="text" name="phone"/>
+                                    <input type="text" id="phone" name="phone"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="checkout-form-list">
                                     <label>State<span class="required">*</span></label>										
-                                    <input type="text" name="state" placeholder="" />
+                                    <input type="text" id="state" name="state" placeholder="" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="checkout-form-list">
                                     <label>Postcode / Zip <span class="required">*</span></label>										
-                                    <input type="text" name="post"/>
-                                </div>
+                                    <input type="text" id="post" name="post"/>
+                                </div> 
                             </div>
                             <div class="col-md-12">
                                 

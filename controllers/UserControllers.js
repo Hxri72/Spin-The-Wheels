@@ -27,31 +27,36 @@ module.exports = {
         loginErr = null
     },
     getUserHome :async (req,res)=>{
-        if(loggedIn){
-            let news = await newsModel.find({})
-            let destination = await destinationModel.find({})
-            let banner = await bannerModel.find({})
-            productModel.find({},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let user = req.session.user
-                    res.render('user/index',{user,result,banner,destination,news})
-                }
-            })
-        }else{
-            let news = await newsModel.find({})
-            let destination = await destinationModel.find({})
-            let banner = await bannerModel.find({})
-            productModel.find({},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    res.render('user/index',{user:false,result,banner,destination,news})
-                }
-            })
-            
+        try {
+            if(loggedIn){
+                let news = await newsModel.find({})
+                let destination = await destinationModel.find({})
+                let banner = await bannerModel.find({})
+                productModel.find({},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/index',{user,result,banner,destination,news})
+                    }
+                })
+            }else{
+                let news = await newsModel.find({})
+                let destination = await destinationModel.find({})
+                let banner = await bannerModel.find({})
+                productModel.find({},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        res.render('user/index',{user:false,result,banner,destination,news})
+                    }
+                })
+                
+            } 
+        } catch (error) {
+            next(error)
         }
+        
         
     },
     getUserSignup:(req,res)=>{
@@ -59,10 +64,12 @@ module.exports = {
         res.render('user/signup',{Err})
         Err = null;
     },
-    getUserProfile:(req,res)=>{
+    getUserProfile:async(req,res)=>{
         if(loggedIn){
             let user = req.session.user
-            res.render('user/profile',{user,addressErr})
+            let viewAddress = await userModel.find({_id:user._id}).populate('Address._id').exec()
+            console.log(viewAddress)
+            res.render('user/profile',{user,addressErr,viewAddress})
             addressErr = null
         }else{
             res.redirect('/login')
@@ -254,55 +261,60 @@ module.exports = {
         })
     },
     getUserCart:async(req,res)=>{
-        if(loggedIn){
-            let productId = req.params.id
-            let userId = req.session.user._id
-            let products = await productModel.find({_id:productId})
-            let productExist = await cartModel.aggregate([
-            { $match: { UserId: userId } },
-            { $unwind: '$products' },
-            { $match: { 'products.productId': productId } },
-            ]);
-            cartModel.findOne({UserId:userId},async(err,data)=>{
-            if(data){
-                    if(productExist.length!==0){
-                        await cartModel.updateOne({UserId:userId,'products.productId':productId},{
-                            $inc : {
-                                'products.$.quantity' : 1
-                            }
-                        })
-                        
-                    }else{
-                        await cartModel.updateOne({UserId:userId},{
-                            $push:{
-                                products : {
-                                    productId : productId ,
-                                    productname : products[0].productname,
-                                    price : products[0].price,
-                                    productImg : products[0].productImg,
-                                    quantity : 1 
+        try {
+            if(loggedIn){
+                let productId = req.params.id
+                let userId = req.session.user._id
+                let products = await productModel.find({_id:productId})
+                let productExist = await cartModel.aggregate([
+                { $match: { UserId: userId } },
+                { $unwind: '$products' },
+                { $match: { 'products.productId': productId } },
+                ]);
+                cartModel.findOne({UserId:userId},async(err,data)=>{
+                if(data){
+                        if(productExist.length!==0){
+                            await cartModel.updateOne({UserId:userId,'products.productId':productId},{
+                                $inc : {
+                                    'products.$.quantity' : 1
                                 }
-                            }
-                        })
-                    }
-               
-            }else{
-                const cart = new cartModel ({
-                    UserId : userId,
-                    products : {
-                        productId : productId ,
-                        productname : products[0].productname,
-                        price : products[0].price,
-                        productImg : products[0].productImg,
-                        quantity : 1 
-                    }
+                            })
+                            
+                        }else{
+                            await cartModel.updateOne({UserId:userId},{
+                                $push:{
+                                    products : {
+                                        productId : productId ,
+                                        productname : products[0].productname,
+                                        price : products[0].price,
+                                        productImg : products[0].productImg,
+                                        quantity : 1 
+                                    }
+                                }
+                            })
+                        }
+                   
+                }else{
+                    const cart = new cartModel ({
+                        UserId : userId,
+                        products : {
+                            productId : productId ,
+                            productname : products[0].productname,
+                            price : products[0].price,
+                            productImg : products[0].productImg,
+                            quantity : 1 
+                        }
+                    })
+                    cart.save()
+                }
                 })
-                cart.save()
+            }else{
+                res.redirect('/login')
             }
-            })
-        }else{
-            res.redirect('/login')
+        } catch (error) {
+            next(error)
         }
+        
         
     },
     getCart:async(req,res)=>{
@@ -350,17 +362,23 @@ module.exports = {
         
         
     },
-    getCheckOut :async(req,res) =>{
-        if(loggedIn){
-        let coupon = await couponModel.find({})
-        let total = req.params.id
-        let userId = req.session.user._id
-        let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
-        let user = req.session.user       
-        res.render('user/checkout',{user,total,viewcart,coupon})               
-        }else{
-            res.redirect('/login')
+    getCheckOut :async(req,res,next) =>{
+        try {
+            if(loggedIn){
+                let coupon = await couponModel.find({})
+                let total = req.params.id
+                let userId = req.session.user._id
+                let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
+                let userAddress = await userModel.findOne({_id:userId}).populate('Address._id').exec()
+                let user = req.session.user       
+                res.render('user/checkout',{user,total,viewcart,coupon,userAddress})               
+                }else{
+                    res.redirect('/login')
+                }
+        } catch (error) {
+            next(error)
         }
+        
         
     },
     getUserlogout:(req,res)=>{
@@ -423,6 +441,52 @@ module.exports = {
                 res.render('user/shop',{user,result,category})
             }
         })
+    },
+    getuserError:(req,res) => {
+        res.render('user/error')
+    },
+    getdeleteAddress:(req,res)=>{
+        console.log(req.params.id)
+        let userId = req.session.user._id
+        let addressId = req.params.id
+        userModel.findOne({_id:userId},async(err,data)=>{
+            if(data){
+                
+                    await userModel.updateOne({_id:userId},{
+                        $pull : {
+                            Address : {
+                                _id : addressId
+                            }
+                        }
+                    }) 
+                
+            }     
+            res.json({status:true})   
+        })
+
+        
+    },
+    postaddAddress :async (req,res) => {
+        let userId = req.session.user._id
+        userModel.find({_id:userId},async(err,data)=>{
+            if(data){
+                    console.log('its Working')
+                    console.log(req.body)
+                    await userModel.updateOne({_id:userId},{
+                        $push:{
+                            Address:{
+                                Address:req.body.address,
+                                District:req.body.district,
+                                Phone:req.body.phone,
+                                State:req.body.state,
+                                Postcode:req.body.postcode
+                            }
+                        }
+                    })
+                 
+            }
+        })
+        res.redirect('/profile')
     },
     postapplyCoupon:(req,res)=>{
         str = req.params.id

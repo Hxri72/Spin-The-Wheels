@@ -7,6 +7,7 @@ const session = require('express-session')
 const nocache = require('nocache')
 const userRouter = require('./routes/user')
 const adminRouter = require('./routes/admin')
+const { appendFile } = require('fs/promises')
 
 app.use(session({secret:"key",cookie:{maxAge:600000}}))
 app.use(express.urlencoded())
@@ -20,11 +21,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/',userRouter)
 app.use('/admin',adminRouter)
 
+app.use(function (req, res, next) {
+    next(createError(404));
+  });
+  
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 404);
+    res.render('user/error');
+  });
+
 //cache
 app.use((req, res, next) => {
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     next();
 });
+
 
 
 
