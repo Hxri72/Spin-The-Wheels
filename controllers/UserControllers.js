@@ -644,9 +644,6 @@ module.exports = {
         } 
         
         let finalTotal = total - discount
-        let text1 = req.body.firstname
-        let text2 = req.body.lastname
-        let Fullname = text1.concat(text2)
         let userId = req.session.user._id
         let cart =  await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
         let cartProducts = cart.products
@@ -674,7 +671,7 @@ module.exports = {
                         Date : new Date().toJSON().slice(0,10),
                         Products : productArray, 
                         Address : {
-                            Fullname : Fullname,
+                            Fullname : req.body.fullname,
                             Address : req.body.address,
                             District : req.body.district,
                             Phone : req.body.phone,
@@ -694,7 +691,7 @@ module.exports = {
                         Date : new Date().toJSON().slice(0,10),
                         Products : productArray,
                         Address : {
-                            Fullname : Fullname,
+                            Fullname : req.body.fullname,
                             Address : req.body.address,
                             District : req.body.district,
                             Phone : req.body.phone,
@@ -719,7 +716,7 @@ module.exports = {
                 Date : new Date().toJSON().slice(0,10),
                 Products : productArray,
                 Address : {
-                    Fullname : Fullname,
+                    Fullname : req.body.fullname,
                     Address : req.body.address,
                     District : req.body.district,
                     Phone : req.body.phone,
