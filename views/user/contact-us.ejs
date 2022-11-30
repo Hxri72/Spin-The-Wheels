@@ -1,0 +1,81 @@
+<%- include('../user/includes/layout.ejs') %>
+
+<%- include('../user/includes/User-header.ejs') %>
+
+<div class="breadcrumb-area pt-255 pb-170" style="background-image: url(/assets/img/banner/banner-4.jpg)">
+    <div class="container-fluid">
+        <div class="breadcrumb-content text-center">
+            <h2 style="color:white;">Contact Us</h2>
+            
+        </div>
+    </div>
+</div>
+
+<div class="contact-area ptb-130">
+    <div class="all-info ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="contact-info-wrapper">
+                        <h4 class="contact-title">INFORMATION</h4>
+                        <div class="communication-info">
+                            <div class="single-communication">
+                                <div class="communication-icon">
+                                    <i class="bi bi-house"></i>
+                                </div>
+                                <div class="communication-text">
+                                    <h4>Address:</h4>
+                                    <p>Kinfra Industrial Park Kozhikode,Kerala,India 673634</p>
+                                </div>
+                            </div>
+                            <div class="single-communication">
+                                <div class="communication-icon">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+                                <div class="communication-text">
+                                    <h4>Phone:</h4>
+                                    <p>+91 8848576772 </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="contact-message-wrapper">
+                        <h4 class="contact-title">GET IN TOUCH</h4>
+                        <div class="contact-message">
+                            <form id="contact-form" action="">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="contact-form-style mb-20">
+                                            <input name="Name" placeholder="Full Name" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="contact-form-style mb-20">
+                                            <input name="Email" placeholder="Email Address" type="email" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="contact-form-style mb-20">
+                                            <input name="Subject" placeholder="Subject" type="text" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="contact-form-style">
+                                            <textarea name="Message" placeholder="Message"></textarea required>
+                                            <button class="submit cr-btn btn-style" type="submit"><span>SEND MESSAGE</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../user/includes/User-footer.ejs') %> 

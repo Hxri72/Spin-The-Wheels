@@ -12,7 +12,7 @@ router.get('/otp',UserControllers.getOtp)
 
 router.get('/resend',UserControllers.getResendOtp)
 
-router.get('/aboutus',UserControllers.getAboutUs)
+router.get('/contactus',UserControllers.getcontactUs)
 
 router.get('/shop',UserControllers.getUserShop)
 
@@ -52,23 +52,15 @@ router.get('/cancelorder/:id',UserControllers.getCancelOrder)
 
 router.get('/categoryproduct/:id',UserControllers.getcategoryProduct)
 
-router.get('/error',UserControllers.getuserError)
-
 router.get('/deleteaddress/:id',UserControllers.getdeleteAddress)
 
 router.post('/addaddress',UserControllers.postaddAddress)
 
 router.post('/applycoupon/:id',UserControllers.postapplyCoupon)
 
-router.post('/search',UserControllers.postProductSearch)
-
 router.post('/cartinc/:id',UserControllers.postUserCartinc)
 
 router.post('/totalBill/:id',UserControllers.postUserTotal)
-
-router.post('/updateprofile',UserControllers.postUpdateProfile)
-
-router.post('/updateDetails',UserControllers.postUpdateDetails)
 
 router.post('/checkout/:id',UserControllers.PostUserCheckout)
 

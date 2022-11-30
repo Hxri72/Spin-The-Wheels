@@ -299,3 +299,30 @@
 
   }
 </script>
+
+<script>
+  $("#contact-form").submit((e)=>{
+        e.preventDefault()
+        $.ajax({
+            url:"https://script.google.com/macros/s/AKfycbz_605nhY-i5aJ9QraIlJ9PbM4znrzkoz1a5Yk1e8f48UG93ccsWjMCIIB7P0yCQcOEYQ/exec",
+            data:$("#contact-form").serialize(),
+            method:"post",
+            success:function (response){
+                Swal.fire({
+                title: "Form Submitted Successfully",
+                icon: "success",
+                showCancelButton: false,
+                }).then(function(){
+                    location.reload()
+                }
+                )
+                
+                //window.location.href="https://google.com"
+            },
+            error:function (err){
+                alert("Something Error")
+
+            }
+        })
+    })
+</script>
