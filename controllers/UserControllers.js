@@ -17,12 +17,12 @@ const crypto = require('crypto')
 
 
 let Err = null;
-let loginErr;
 let addressErr;
 let viewcart;
 module.exports = {
     getUserlogin : (req,res,next)=>{
         try {
+            let loginErr = req.session.loginErr
             let user = req.session.user
             res.render('user/login',{user,loginErr})
             loginErr = null 
@@ -106,7 +106,8 @@ module.exports = {
     },
     getAddtoWishlist:async(req,res,next)=>{
         try {
-            let productId = req.params.id
+            if(req.session.loggedIn){
+                let productId = req.params.id
         let userId = req.session.user._id
         let products = await productModel.find({_id:productId})
         let productExist = await wishlistModel.aggregate([
@@ -143,6 +144,10 @@ module.exports = {
                 wishlist.save()
             }
         })
+    }else{
+        res.redirect('/login')
+    }
+        
         } catch (error) {
             next(error)
         }
@@ -150,7 +155,7 @@ module.exports = {
     },
     getUserWishlist : async(req,res,next) =>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let userId = req.session.user._id
                 let viewWishlist = await wishlistModel.findOne({UserId:userId}).populate('products.productId').exec()
                 console.log(viewWishlist)
@@ -173,27 +178,32 @@ module.exports = {
     },
     getdeleteProduct:async(req,res,next)=>{
         try {
-            let userId = req.session.user
-        let productId = req.params.id
-        let productExist = await wishlistModel.aggregate([
-            { $match: { UserId: userId } },
-            { $unwind: '$products' },
-            { $match: { 'products.productId': productId } },
-          ]);
-        wishlistModel.findOne({UserId:userId},async(err,data)=>{
-            if(data){
-                if(productExist.length===0){
-                    await wishlistModel.updateOne({UserId:userId},{
-                        $pull : {
-                            products : {
-                                productId : productId
-                            }
+            if(req.session.loggedIn){
+                let userId = req.session.user
+                let productId = req.params.id
+                let productExist = await wishlistModel.aggregate([
+                    { $match: { UserId: userId } },
+                    { $unwind: '$products' },
+                    { $match: { 'products.productId': productId } },
+                  ]);
+                wishlistModel.findOne({UserId:userId},async(err,data)=>{
+                    if(data){
+                        if(productExist.length===0){
+                            await wishlistModel.updateOne({UserId:userId},{
+                                $pull : {
+                                    products : {
+                                        productId : productId
+                                    }
+                                }
+                            }) 
                         }
-                    }) 
-                }
-            }        
-        })
-        res.redirect('/wishlist')
+                    }        
+                })
+                res.redirect('/wishlist')
+            }else{
+                res.redirect('/login')
+            }
+        
         } catch (error) {
             next(error)
         }
@@ -201,7 +211,8 @@ module.exports = {
     },
     getdeleteProductcart:async(req,res,next)=>{
         try {
-            let userId = req.session.user._id
+            if(req.session.loggedIn){
+                let userId = req.session.user._id
         let productId = req.params.id
         let productExist = await cartModel.aggregate([
             { $match: { UserId: userId } },
@@ -222,6 +233,10 @@ module.exports = {
             }        
         })
         res.json({status:true})
+            }else{
+                res.redirect('/login')
+            }
+        
         } catch (error) {
             next(error)
         }
@@ -229,7 +244,7 @@ module.exports = {
     },
     getUserShop:async(req,res,next)=>{
         try {
-            let pageNum = req.query.page
+                let pageNum = req.query.page
             if(pageNum===undefined){
                 pageNum = 1;
             }
@@ -248,6 +263,7 @@ module.exports = {
                 let user = req.session.user 
                 res.render('user/shop',{user,result,category,currentPage:pageNum,totalDocuments:docCount,pages:Math.ceil(docCount/perPage)}) 
             }) 
+            
         } catch (error) {
             next(error)
         }
@@ -256,14 +272,15 @@ module.exports = {
     },
     getUserDestinations:(req,res,next)=>{
         try {
-            destinationModel.find({},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let user = req.session.user
-                    res.render('user/destinations',{user,result})
-                }
-            })  
+                destinationModel.find({},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/destinations',{user,result})
+                    }
+                })  
+            
         } catch (error) {
             next(error)
         }
@@ -271,14 +288,15 @@ module.exports = {
     },
     getUserNews:(req,res,next)=>{
         try {
-            newsModel.find({},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let user = req.session.user
-                    res.render('user/news',{user,result})
-                }
-            })   
+                newsModel.find({},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/news',{user,result})
+                    }
+                })   
+            
         } catch (error) {
             next(error)
         }
@@ -287,14 +305,15 @@ module.exports = {
     },
     getProductDetails:(req,res,next)=>{ 
         try {
-            productModel.find({_id:req.params.id},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let user = req.session.user
-                    res.render('user/product-details',{user,result})
-                }
-            })  
+                productModel.find({_id:req.params.id},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/product-details',{user,result})
+                    }
+                })  
+            
         } catch (error) {
             next(error)
         }
@@ -302,14 +321,16 @@ module.exports = {
     },
     getdestinationDetails: (req,res,next)=>{
         try {
-            destinationModel.find({_id:req.params.id},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let user = req.session.user
-                    res.render('user/destinationDetails',{user,result})
-                }
-            })   
+                destinationModel.find({_id:req.params.id},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/destinationDetails',{user,result})
+                    }
+                })   
+            
+            
         } catch (error) {
             next(error)
         }
@@ -317,14 +338,15 @@ module.exports = {
     },
     getnewsDetails : (req,res,next) => {
         try {
-            newsModel.find({_id:req.params.id},(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    let user = req.session.user
-                    res.render('user/newsDetails',{user,result})
-                }
-            })  
+                newsModel.find({_id:req.params.id},(err,result)=>{
+                    if(err){
+                        console.log(err)
+                    }else{
+                        let user = req.session.user
+                        res.render('user/newsDetails',{user,result})
+                    }
+                })  
+            
         } catch (error) {
             next(error)
         }
@@ -332,7 +354,7 @@ module.exports = {
     },
     getUserCart:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let productId = req.params.id
                 let userId = req.session.user._id
                 let products = await productModel.find({_id:productId})
@@ -389,7 +411,7 @@ module.exports = {
     },
     getCart:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let userId = req.session.user._id
                 let viewcart = await cartModel.findOne({UserId:userId}).populate('products.productId').exec()
                 if(viewcart===null){
@@ -439,7 +461,7 @@ module.exports = {
     },
     getCheckOut :async(req,res,next) =>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let coupon = await couponModel.find({})
                 let total = req.params.id
                 let userId = req.session.user._id
@@ -500,7 +522,7 @@ module.exports = {
     },
     getMyOrders:async(req,res,next) => {
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let userId = req.session.user._id
                 let vieworders = await orderModel.find({UserId:userId}).populate('Products.productId').exec()
                 let viewOrders = vieworders.reverse()
@@ -518,7 +540,7 @@ module.exports = {
     },
     getCancelOrder:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let orderId = req.params.id
                 await orderModel.updateOne({_id:orderId},{
                 $set:{
@@ -537,7 +559,8 @@ module.exports = {
     },
     getcategoryProduct:async(req,res,next)=>{
         try {
-            let category = await categoryModel.find({})
+            if(req.session.loggedIn){
+                let category = await categoryModel.find({})
             let categoryName = req.params.category
             productModel.find({category:categoryName},(err,result)=>{
                 if(err){
@@ -546,7 +569,11 @@ module.exports = {
                     let user = req.session.user
                     res.render('user/shop',{user,result,category})
                 }
-            })   
+            })  
+            }else{
+                res.redirect('/login')
+            }
+             
         } catch (error) {
             next(error)
         }
@@ -554,8 +581,7 @@ module.exports = {
     },
     getdeleteAddress:(req,res,next)=>{
         try {
-            if(loggedIn){
-                console.log(req.params.id)
+            if(req.session.loggedIn){
             let userId = req.session.user._id
             let addressId = req.params.id
             userModel.findOne({_id:userId},async(err,data)=>{
@@ -583,7 +609,7 @@ module.exports = {
     },
     postaddAddress :async (req,res,next) => {
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let userId = req.session.user._id
             userModel.find({_id:userId},async(err,data)=>{
                 if(data){
@@ -615,7 +641,7 @@ module.exports = {
     },
     postapplyCoupon:(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 str = req.params.id
             let array = str.split("!");
             let couponCode = array[0]
@@ -705,7 +731,7 @@ module.exports = {
     },
     postUserCartinc:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 str = req.params.id
             let array = str.split("t");
             userId = req.session.user._id
@@ -734,7 +760,7 @@ module.exports = {
     },
     postUserTotal:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let totalPrice = req.params.id
             let userId = req.session.user._id
             let UserId = await userModel.findOne({UserId:userId})
@@ -754,7 +780,7 @@ module.exports = {
     },
     PostUserCheckout:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let discount;
             let total =  req.params.id
             let coupon = req.session.coupon
@@ -876,7 +902,7 @@ module.exports = {
     },
     postverifyPayment:async(req,res,next)=>{
         try {
-            if(loggedIn){
+            if(req.session.loggedIn){
                 let userData = req.session.user
             userId = userData._id
            let details = req.body
@@ -972,20 +998,20 @@ module.exports = {
                 if(user.userStatus === "active"){
                     bcrypt.compare(req.body.Password,user.Password).then((data)=>{
                         if(data){
-                            loggedIn = true
+                            req.session.loggedIn = true
                             req.session.user = user
                             res.redirect('/')
                         }else{
-                            loginErr = "Invalid Password"
+                            req.session.loginErr = "Invalid Password"
                             res.redirect('/login')
                         }
                     })
                 }else{
-                    loginErr = "You are Blocked by Admin"
+                    req.session.loginErr = "You are Blocked by Admin"
                     res.redirect('/login')
                 }
             }else{
-                loginErr = "Invalid Email"
+                req.session.loginErr = "Invalid Email"
                 res.redirect('/login')
             }  
         } catch (error) {
