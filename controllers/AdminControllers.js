@@ -1,5 +1,3 @@
-const ADMIN_COLLECTION = require('../config/collection')
-const USER_COLLECTION = require('../config/collection')
 const adminModel = require('../models/admin')
 const userModel = require('../models/user')
 const categoryModel = require('../models/category')
@@ -19,7 +17,7 @@ let categoryErr;
 
 module.exports = {
     getAdminlogin:(req,res)=>{
-        res.render('admin/Admin-login',{adminloginErr})
+        res.render('admin/admin-login',{adminloginErr})
     },
     getdashboardDetails:async(req,res)=>{
         let result1 = {

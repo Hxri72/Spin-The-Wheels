@@ -1,7 +1,6 @@
 const userModel = require('../models/user')
 const userStatus = require('../models/user')
 const bcrypt = require('bcrypt')
-const {USER_COLLECTION}= require('../config/collection')
 const otpverification = require('../utils/otpgenerator')
 const productModel = require('../models/product')
 const cartModel = require('../models/cart')
