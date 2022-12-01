@@ -17,7 +17,7 @@ let categoryErr;
 
 module.exports = {
     getAdminlogin:(req,res)=>{
-        res.render('admin/admin-login',{adminloginErr})
+        res.render('admin/adminLogin',{adminloginErr})
     },
     getdashboardDetails:async(req,res)=>{
         let result1 = {
