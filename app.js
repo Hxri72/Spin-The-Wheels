@@ -21,6 +21,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.use('/',userRouter)
 app.use('/admin',adminRouter)
 
+app.use(function (req, res, next) {
+    next(createError(404));
+  });
+  
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 404);
+    res.render('user/error');
+  });
+
 
 
 //cache

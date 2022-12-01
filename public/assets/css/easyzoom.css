@@ -26,18 +26,7 @@
 	cursor: not-allowed;
 }
 
-.easyzoom-notice {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	z-index: 150;
-	width: 10em;
-	margin: -1em 0 0 -5em;
-	line-height: 2em;
-	text-align: center;
-	background: #FFF;
-	box-shadow: 0 0 10px #888;
-}
+
 
 .easyzoom-flyout {
 	position:absolute;

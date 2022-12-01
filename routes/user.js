@@ -72,13 +72,6 @@ router.post('/signup',UserControllers.PostUsersignup)
 
 router.post('/login',UserControllers.PostUserlogin)
 
-router.use(function (req, res, next) {
-    next(createError(404));
-  });
-  
-  router.use(function (err, req, res, next) {
-    res.status(err.status || 404);
-    res.render('user/error');
-  });
+
 
 module.exports = router;

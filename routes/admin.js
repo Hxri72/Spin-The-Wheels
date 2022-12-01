@@ -124,5 +124,13 @@ router.get('/adminlogout',(req,res)=>{
      res.redirect('/admin')
  })
 
+ router.use(function (req, res, next) {
+  next(createError(404));
+});
+
+router.use(function (err, req, res, next) {
+  res.status(err.status || 404);
+  res.render('admin/Admin-Error');
+});
 
 module.exports = router
