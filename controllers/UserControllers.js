@@ -931,7 +931,7 @@ module.exports = {
     PostUserOtp:(req,res,next)=>{
         try {
             const joinedbody=req.body.num1.join("")
-            otpverification.otpverify(req.body.Phone,joinedbody) 
+            otpverification.otpverify(req.session.otp.Phone,joinedbody) 
             .then(({status})=>{
                 const user = userModel.create(req.session.otp)
                 req.session.user = req.session.otp
@@ -963,7 +963,7 @@ module.exports = {
                             userStatus:"active"
         
                         })
-    
+                        
                         req.session.otp = user
                         // req.session.otpgenerator = otpverification.otpgenerator();
                         // console.log(req.session.otpgenerator)
