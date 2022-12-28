@@ -218,5 +218,74 @@
 <script src="/assets/js/main.js"></script>
 <script src="/assets/js/preloader.js"></script>
 
-
+<script>
+    function addtocart(productId) {
+      Swal.fire({
+        title: "Item added to the cart",
+        icon: "success",
+        showCancelButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "/addtocart/" + productId,
+            method: "get",
+            success: (response) => {
+              if (response.status) {
+                Swal.fire({
+                  icon: "Deleted",
+                  title: "Your file has been deleted.",
+                  showConfirmbutton: false,
+                }).then(() => {
+                  location.reload();
+                });
+              }
+            },
+          });
+        }
+      });
+    }
+  </script>
+  
+  <script>
+    function wishlist(productId) {
+      Swal.fire({
+        title: "Item added to the wishlist",
+        icon: "success",
+        showCancelButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "/wishlist/" + productId,
+            method: "get",
+            success: (response) => {
+              if (response.status) {
+                Swal.fire({
+                  icon: "Deleted",
+                  title: "Your file has been added.",
+                  showConfirmbutton: false,
+                }).then(() => {
+                  location.reload();
+                });
+              }
+            },
+          });
+        }
+      });
+    }
+  </script>
+  
+  <script>
+    function quantityChange(productId) {
+      let quantity = document.getElementById(productId + "quantity").value;
+      $.ajax({
+        url: "/cartinc/" + productId + "t" + quantity,
+        method: "post",
+        success: (response) => {
+          if (response.status) {
+            location.reload();
+          }
+        },
+      });
+    }
+  </script>
  
